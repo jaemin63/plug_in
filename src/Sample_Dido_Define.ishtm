@@ -127,23 +127,31 @@
       .start-row {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 16px;
         margin-bottom: 16px;
         padding: 12px 16px;
         background: #f9f9f9;
         border-radius: 6px;
         border: 1px solid #e0e0e0;
       }
+      .start-group {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
       .start-label {
-        font-weight: 700;
+        font-weight: 600;
         color: #555;
-        font-size: 14px;
+        font-size: 13px;
         white-space: nowrap;
+        flex-shrink: 0;
       }
       .start-input {
-        width: 120px;
-        flex-shrink: 0;
+        flex: 1;
         padding: 8px 12px;
+        font-size: 14px;
+        min-width: 0;
       }
       .th {
         font-weight: 700;
@@ -234,18 +242,50 @@
         cursor: not-allowed;
         border-color: #e8e8e8;
       }
-      .log {
+      .log-panel {
         margin-top: 20px;
-        padding: 16px;
         background: white;
         border-radius: 8px;
         border: 1px solid #e0e0e0;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      }
+      .log-panel.hidden {
+        display: none;
+      }
+      .log-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 16px;
+        border-bottom: 1px solid #e0e0e0;
+        background: #f9f9f9;
+        border-radius: 8px 8px 0 0;
+      }
+      .log-title {
+        font-weight: 600;
+        color: #555;
+        font-size: 14px;
+      }
+      .btn-toggle-log {
+        padding: 6px 12px;
+        background: #888;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .btn-toggle-log:hover {
+        background: #666;
+      }
+      .log {
+        padding: 16px;
         font-family: "Courier New", monospace;
         font-size: 12px;
         white-space: pre-wrap;
         height: 200px;
         overflow-y: auto;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
         color: #333;
         line-height: 1.6;
       }
@@ -271,7 +311,8 @@
       <div class="header">
         <h2 style="margin: 0">DI/DO Define</h2>
         <div class="spacer"></div>
-        <div class="toggle-container">
+        <button class="btn-toggle-log" onclick="toggleLog()">Show Log</button>
+        <div class="toggle-container" style="margin-left: 16px;">
           <span class="toggle-label">Edit Mode</span>
           <div class="toggle-switch" id="toggleSwitch" onclick="toggleEdit()">
             <div class="toggle-slider"></div>
@@ -289,8 +330,14 @@
       <div id="tab-DI" class="tab-content active">
         <div class="panel">
           <div class="start-row">
-            <span class="start-label">START ADDRESS:</span>
-            <input type="number" id="DI_START" class="start-input" min="0" max="9999" />
+            <div class="start-group">
+              <span class="start-label">Start CNC Address:</span>
+              <input type="number" id="DI_START" class="start-input" min="0" max="9999" />
+            </div>
+            <div class="start-group">
+              <span class="start-label">Start DI Address:</span>
+              <input type="number" id="DI_BASE" class="start-input" min="0" max="99999" />
+            </div>
           </div>
           <div class="grid" style="margin-bottom: 6px">
             <div class="th">#</div>
@@ -376,8 +423,14 @@
       <div id="tab-DO" class="tab-content">
         <div class="panel">
           <div class="start-row">
-            <span class="start-label">START ADDRESS:</span>
-            <input type="number" id="DO_START" class="start-input" min="0" max="9999" />
+            <div class="start-group">
+              <span class="start-label">Start CNC Address:</span>
+              <input type="number" id="DO_START" class="start-input" min="0" max="9999" />
+            </div>
+            <div class="start-group">
+              <span class="start-label">Start DO Address:</span>
+              <input type="number" id="DO_BASE" class="start-input" min="0" max="99999" />
+            </div>
           </div>
           <div class="grid" style="margin-bottom: 6px">
             <div class="th">#</div>
@@ -459,7 +512,13 @@
         </div>
       </div>
 
-      <div id="log" class="log"></div>
+      <div id="logPanel" class="log-panel hidden">
+        <div class="log-header">
+          <span class="log-title">System Log</span>
+          <button class="btn-toggle-log" onclick="toggleLog()">Hide</button>
+        </div>
+        <div id="log" class="log"></div>
+      </div>
     </div>
 
     <script type="text/javascript">
@@ -510,16 +569,17 @@
       function updateOffset(prefix, index) {
         // Update offset for DI or DO
         const startEl = document.getElementById(prefix + "_START");
+        const baseEl = document.getElementById(prefix + "_BASE");
         const addrEl = document.getElementById(prefix + "_ADDR_" + index);
         const bitEl = document.getElementById(prefix + "_BIT_" + index);
         const offsetEl = document.getElementById(prefix + "_OFFSET_" + index);
 
-        if (!startEl || !addrEl || !bitEl || !offsetEl) return;
+        if (!startEl || !baseEl || !addrEl || !bitEl || !offsetEl) return;
 
         const offset = calculateOffset(startEl.value, addrEl.value, bitEl.value);
+        const baseAddress = parseInt(baseEl.value) || 0;
 
-        // Display as "DI[10000+offset]" or "DO[20000+offset]"
-        const baseAddress = (prefix === "DO") ? 20000 : 10000;
+        // Display as "DI[base+offset]" or "DO[base+offset]"
         const displayValue = prefix + "[" + (baseAddress + offset) + "]";
         offsetEl.value = displayValue;
 
@@ -592,6 +652,25 @@
         // Bind DI START
         bindVariable("DI_START", "DI_START");
 
+        // Bind DI_OFFSET_START with default value
+        ihmiGet("DI_OFFSET_START", (_, kv, t, v) => {
+          const val = parseInt(v, 10) || 0;
+          const diBase = document.getElementById("DI_BASE");
+          if (diBase) {
+            if (val === 0) {
+              // No value, set default to 10000
+              diBase.value = 10000;
+              ihmiSet("DI_OFFSET_START", 10000);
+            } else {
+              diBase.value = val;
+            }
+            // Update all DI offsets
+            for (let i = 1; i <= 10; i++) {
+              updateOffset("DI", i);
+            }
+          }
+        });
+
         // Bind DI[1~10]
         for (let i = 1; i <= 10; i++) {
           bindVariable("DI_NAME_" + i, "DI_NAME[" + i + "]");
@@ -602,6 +681,25 @@
 
         // Bind DO START
         bindVariable("DO_START", "DO_START");
+
+        // Bind DO_OFFSET_START with default value
+        ihmiGet("DO_OFFSET_START", (_, kv, t, v) => {
+          const val = parseInt(v, 10) || 0;
+          const doBase = document.getElementById("DO_BASE");
+          if (doBase) {
+            if (val === 0) {
+              // No value, set default to 20000
+              doBase.value = 20000;
+              ihmiSet("DO_OFFSET_START", 20000);
+            } else {
+              doBase.value = val;
+            }
+            // Update all DO offsets
+            for (let i = 1; i <= 10; i++) {
+              updateOffset("DO", i);
+            }
+          }
+        });
 
         // Bind DO[1~10]
         for (let i = 1; i <= 10; i++) {
@@ -628,9 +726,11 @@
       }
 
       function updateInputsState(enabled) {
-        // Update DI START
+        // Update DI START and BASE
         const diStart = document.getElementById("DI_START");
+        const diBase = document.getElementById("DI_BASE");
         if (diStart) diStart.disabled = !enabled;
+        if (diBase) diBase.disabled = !enabled;
 
         // Update DI input fields based on EDIT_ENABLE state
         for (let i = 1; i <= 10; i++) {
@@ -643,9 +743,11 @@
           if (bitInput) bitInput.disabled = !enabled;
         }
 
-        // Update DO START
+        // Update DO START and BASE
         const doStart = document.getElementById("DO_START");
+        const doBase = document.getElementById("DO_BASE");
         if (doStart) doStart.disabled = !enabled;
+        if (doBase) doBase.disabled = !enabled;
 
         // Update DO input fields based on EDIT_ENABLE state
         for (let i = 1; i <= 10; i++) {
@@ -681,10 +783,47 @@
         });
       }
 
+      function toggleLog() {
+        const logPanel = document.getElementById("logPanel");
+        const buttons = document.querySelectorAll(".btn-toggle-log");
+
+        if (logPanel.classList.contains("hidden")) {
+          logPanel.classList.remove("hidden");
+          buttons.forEach(btn => btn.textContent = btn.textContent.includes("Show") ? "Hide Log" : "Hide");
+        } else {
+          logPanel.classList.add("hidden");
+          buttons.forEach(btn => btn.textContent = btn.textContent.includes("Hide") ? "Show Log" : "Show");
+        }
+      }
+
       window.onload = () => {
         log("System Loaded. Auto-bind DI[1~10] and DO[1~10].");
         readEdit();
         bindAll();
+
+        // Add change event listeners for BASE addresses
+        const diBase = document.getElementById("DI_BASE");
+        const doBase = document.getElementById("DO_BASE");
+
+        if (diBase) {
+          diBase.addEventListener("change", () => {
+            const val = parseInt(diBase.value, 10) || 10000;
+            ihmiSet("DI_OFFSET_START", val);
+            for (let i = 1; i <= 10; i++) {
+              updateOffset("DI", i);
+            }
+          });
+        }
+
+        if (doBase) {
+          doBase.addEventListener("change", () => {
+            const val = parseInt(doBase.value, 10) || 20000;
+            ihmiSet("DO_OFFSET_START", val);
+            for (let i = 1; i <= 10; i++) {
+              updateOffset("DO", i);
+            }
+          });
+        }
       };
     </script>
   </body>

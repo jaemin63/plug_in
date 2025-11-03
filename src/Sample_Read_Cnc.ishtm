@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>DN Solutions | Condition Builder</title>
+    <title>DN Solutions | Select CNC Read Signal</title>
     <meta charset="<!-- #echo var={_CHARSET} -->" />
     <link rel="stylesheet" type="text/css" href="/frh/ihmi/ihmicomponentstyl.css" />
     <link rel="stylesheet" type="text/css" href="/frh/ihmi/ihmicomponentfrm.css" />
@@ -150,7 +150,7 @@
   <body>
     <div class="wrap">
       <div class="header">
-        <h2>CNC Signal Read</h2>
+        <h2>Select CNC Read Signal</h2>
       </div>
 
       <div class="panel">
@@ -164,7 +164,6 @@
           </span>
         </div>
         <div id="conditionZone" class="condition-zone empty"></div>
-        <div class="helper-text">Selected condition will be displayed here</div>
       </div>
 
       <div class="panel">
@@ -172,7 +171,6 @@
         <select id="conditionSelect" class="condition-select" onchange="onConditionChange()">
           <option value="">-- Select a predefined condition --</option>
         </select>
-        <div class="helper-text">Choose from predefined conditions created in Condition Manager</div>
       </div>
     </div>
 

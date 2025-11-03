@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DN Solutions | Model List</title>
+    <meta charset="<!-- #echo var={_CHARSET} -->" />
+    <link rel="stylesheet" type="text/css" href="/frh/ihmi/ihmicomponentstyl.css" />
+    <link rel="stylesheet" type="text/css" href="/frh/ihmi/ihmicomponentfrm.css" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f5f5f5;
+        min-height: 100vh;
+      }
+      .wrap {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 24px;
+        background: white;
+        padding: 20px 24px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      }
+      .header h2 {
+        margin: 0;
+        color: #333;
+        font-size: 22px;
+        font-weight: 600;
+      }
+      .btn-refresh {
+        padding: 10px 20px;
+        background: #555;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .btn-refresh:hover {
+        background: #333;
+      }
+      .panel {
+        background: white;
+        border-radius: 8px;
+        padding: 24px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        overflow-x: auto;
+      }
+      .section-title {
+        font-weight: 700;
+        color: #555;
+        font-size: 16px;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #e0e0e0;
+      }
+
+      /* Current Model Info */
+      .current-model {
+        background: #f0f8ff;
+        border: 2px solid #4a90e2;
+        border-radius: 8px;
+        padding: 16px 20px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .current-model-label {
+        font-weight: 700;
+        color: #4a90e2;
+        font-size: 14px;
+      }
+      .current-model-value {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      /* Table */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+        min-width: 1200px;
+      }
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #e0e0e0;
+        font-size: 13px;
+      }
+      th {
+        background: #f5f5f5;
+        font-weight: 600;
+        color: #555;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      td {
+        color: #333;
+      }
+      tr:hover {
+        background: #fafafa;
+      }
+      tr.current-row {
+        background: #f0f8ff;
+        font-weight: 600;
+      }
+      tr.current-row td {
+        color: #4a90e2;
+      }
+      .col-no {
+        width: 60px;
+        text-align: center;
+      }
+      .col-name {
+        width: 150px;
+        font-weight: 600;
+      }
+      .col-clamp {
+        width: 80px;
+        text-align: center;
+      }
+      .col-type {
+        width: 90px;
+        text-align: center;
+      }
+      .col-coord {
+        width: 80px;
+        text-align: right;
+        font-family: 'Courier New', monospace;
+      }
+      .col-pallet {
+        width: 100px;
+        text-align: center;
+      }
+      .empty-cell {
+        color: #999;
+        font-style: italic;
+      }
+      .badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+      .badge-outside {
+        background: #e3f2fd;
+        color: #1976d2;
+      }
+      .badge-inside {
+        background: #f3e5f5;
+        color: #7b1fa2;
+      }
+      .badge-cylinder {
+        background: #fff3e0;
+        color: #f57c00;
+      }
+      .badge-square {
+        background: #e8f5e9;
+        color: #388e3c;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div class="header">
+        <h2>Model List</h2>
+        <button class="btn-refresh" onclick="loadAllModels()">Refresh</button>
+      </div>
+
+      <!-- Current Model Display -->
+      <div class="current-model">
+        <span class="current-model-label">CURRENT MODEL:</span>
+        <span class="current-model-value" id="currentModelDisplay">-</span>
+      </div>
+
+      <!-- Model Table -->
+      <div class="panel">
+        <div class="section-title">All Models (1-15)</div>
+        <table>
+          <thead>
+            <tr>
+              <th class="col-no">No.</th>
+              <th class="col-name">Name</th>
+              <th class="col-clamp">Clamp (mm)</th>
+              <th class="col-type">Hand Type</th>
+              <th class="col-type">Object Type</th>
+              <th class="col-coord">Work X</th>
+              <th class="col-coord">Work Z</th>
+              <th class="col-coord">Hand X</th>
+              <th class="col-coord">Hand Y</th>
+              <th class="col-coord">Hand Z</th>
+              <th class="col-coord">W</th>
+              <th class="col-coord">P</th>
+              <th class="col-coord">R</th>
+              <th class="col-pallet">Pallet Slots</th>
+            </tr>
+          </thead>
+          <tbody id="modelTableBody">
+            <!-- Model rows will be loaded here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      const KAREL_PROGRAM_NAME = "IPL_DN_SimTen_Cfg";
+      let currentSelectedModel = null;
+
+      // Initialize
+      function init() {
+        // Required for ihmi
+      }
+
+      // Helper functions
+      function ihmiGet(kvar, cb) {
+        try {
+          top.ihmi_getVar(KAREL_PROGRAM_NAME, kvar, cb);
+        } catch (e) {
+          console.error("ihmi_getVar error " + kvar + ": " + e);
+        }
+      }
+
+      // Format coordinate value
+      function formatCoord(val) {
+        const num = parseFloat(val);
+        if (isNaN(num) || num === 0) {
+          return '<span class="empty-cell">-</span>';
+        }
+        return num.toFixed(2);
+      }
+
+      // Format hand type
+      function formatHandType(val) {
+        const num = parseInt(val);
+        if (num === 0) {
+          return '<span class="badge badge-outside">Outside</span>';
+        } else if (num === 1) {
+          return '<span class="badge badge-inside">Inside</span>';
+        }
+        return '<span class="empty-cell">-</span>';
+      }
+
+      // Format object type
+      function formatObjectType(val) {
+        const num = parseInt(val);
+        if (num === 0) {
+          return '<span class="badge badge-cylinder">Cylinder</span>';
+        } else if (num === 1) {
+          return '<span class="badge badge-square">Square</span>';
+        }
+        return '<span class="empty-cell">-</span>';
+      }
+
+      // Format pallet slots
+      function formatPallet(val) {
+        const num = parseInt(val);
+        const palletMap = {
+          13: "PT 100 (13)",
+          25: "PT 75 (25)",
+          41: "PT 50 (41)",
+          61: "PT 40 (61)",
+          85: "PT 30 (85)"
+        };
+        return palletMap[num] || '<span class="empty-cell">-</span>';
+      }
+
+      // Load current selected model
+      function loadCurrentModel() {
+        ihmiGet("MODEL_SELECTED", function (prog, kv, type, val) {
+          const modelNum = parseInt(val) || 0;
+          currentSelectedModel = modelNum;
+          if (modelNum > 0) {
+            document.getElementById("currentModelDisplay").textContent = "Model No. " + modelNum;
+          } else {
+            document.getElementById("currentModelDisplay").textContent = "None";
+          }
+        });
+      }
+
+      // Load all models
+      function loadAllModels() {
+        loadCurrentModel();
+
+        const tbody = document.getElementById("modelTableBody");
+        tbody.innerHTML = "";
+
+        for (let i = 1; i <= 15; i++) {
+          loadModelRow(i);
+        }
+      }
+
+      function loadModelRow(index) {
+        const row = document.createElement("tr");
+        row.id = "modelRow" + index;
+
+        // Check if this is the current model
+        if (index === currentSelectedModel) {
+          row.classList.add("current-row");
+        }
+
+        // Create cells
+        const cellNo = document.createElement("td");
+        cellNo.className = "col-no";
+        cellNo.textContent = index;
+
+        const cellName = document.createElement("td");
+        cellName.className = "col-name";
+        cellName.innerHTML = '<span class="empty-cell">-</span>';
+
+        const cellClamp = document.createElement("td");
+        cellClamp.className = "col-clamp";
+        cellClamp.innerHTML = '<span class="empty-cell">-</span>';
+
+        const cellHandType = document.createElement("td");
+        cellHandType.className = "col-type";
+        cellHandType.innerHTML = '<span class="empty-cell">-</span>';
+
+        const cellObjectType = document.createElement("td");
+        cellObjectType.className = "col-type";
+        cellObjectType.innerHTML = '<span class="empty-cell">-</span>';
+
+        const cellWorkX = document.createElement("td");
+        cellWorkX.className = "col-coord";
+        cellWorkX.innerHTML = '<span class="empty-cell">-</span>';
+
+        const cellWorkZ = document.createElement("td");
+        cellWorkZ.className = "col-coord";
+        cellWorkZ.innerHTML = '<span class="empty-cell">-</span>';
+
+        const cellHandX = document.createElement("td");
+        cellHandX.className = "col-coord";
+        cellHandX.innerHTML = '<span class="empty-cell">-</span>';
+
+        const cellHandY = document.createElement("td");
+        cellHandY.className = "col-coord";
+        cellHandY.innerHTML = '<span class="empty-cell">-</span>';
+
+        const cellHandZ = document.createElement("td");
+        cellHandZ.className = "col-coord";
+        cellHandZ.innerHTML = '<span class="empty-cell">-</span>';
+
+        const cellHandW = document.createElement("td");
+        cellHandW.className = "col-coord";
+        cellHandW.innerHTML = '<span class="empty-cell">-</span>';
+
+        const cellHandP = document.createElement("td");
+        cellHandP.className = "col-coord";
+        cellHandP.innerHTML = '<span class="empty-cell">-</span>';
+
+        const cellHandR = document.createElement("td");
+        cellHandR.className = "col-coord";
+        cellHandR.innerHTML = '<span class="empty-cell">-</span>';
+
+        const cellPallet = document.createElement("td");
+        cellPallet.className = "col-pallet";
+        cellPallet.innerHTML = '<span class="empty-cell">-</span>';
+
+        // Append cells to row
+        row.appendChild(cellNo);
+        row.appendChild(cellName);
+        row.appendChild(cellClamp);
+        row.appendChild(cellHandType);
+        row.appendChild(cellObjectType);
+        row.appendChild(cellWorkX);
+        row.appendChild(cellWorkZ);
+        row.appendChild(cellHandX);
+        row.appendChild(cellHandY);
+        row.appendChild(cellHandZ);
+        row.appendChild(cellHandW);
+        row.appendChild(cellHandP);
+        row.appendChild(cellHandR);
+        row.appendChild(cellPallet);
+
+        document.getElementById("modelTableBody").appendChild(row);
+
+        // Load data asynchronously
+        ihmiGet("MODEL_NAME[" + index + "]", function (prog, kv, type, val) {
+          if (val && val.trim() !== "") {
+            cellName.textContent = val;
+          }
+        });
+
+        ihmiGet("MODEL_CLAMP[" + index + "]", function (prog, kv, type, val) {
+          const num = parseInt(val);
+          if (!isNaN(num) && num > 0) {
+            cellClamp.textContent = num;
+          }
+        });
+
+        ihmiGet("MODEL_HAND_TYPE[" + index + "]", function (prog, kv, type, val) {
+          cellHandType.innerHTML = formatHandType(val);
+        });
+
+        ihmiGet("MODEL_OBJECT[" + index + "]", function (prog, kv, type, val) {
+          cellObjectType.innerHTML = formatObjectType(val);
+        });
+
+        ihmiGet("MODEL_WORK_X[" + index + "]", function (prog, kv, type, val) {
+          cellWorkX.innerHTML = formatCoord(val);
+        });
+
+        ihmiGet("MODEL_WORK_Z[" + index + "]", function (prog, kv, type, val) {
+          cellWorkZ.innerHTML = formatCoord(val);
+        });
+
+        ihmiGet("MODEL_HAND_X[" + index + "]", function (prog, kv, type, val) {
+          cellHandX.innerHTML = formatCoord(val);
+        });
+
+        ihmiGet("MODEL_HAND_Y[" + index + "]", function (prog, kv, type, val) {
+          cellHandY.innerHTML = formatCoord(val);
+        });
+
+        ihmiGet("MODEL_HAND_Z[" + index + "]", function (prog, kv, type, val) {
+          cellHandZ.innerHTML = formatCoord(val);
+        });
+
+        ihmiGet("MODEL_HAND_W[" + index + "]", function (prog, kv, type, val) {
+          cellHandW.innerHTML = formatCoord(val);
+        });
+
+        ihmiGet("MODEL_HAND_P[" + index + "]", function (prog, kv, type, val) {
+          cellHandP.innerHTML = formatCoord(val);
+        });
+
+        ihmiGet("MODEL_HAND_R[" + index + "]", function (prog, kv, type, val) {
+          cellHandR.innerHTML = formatCoord(val);
+        });
+
+        ihmiGet("MODEL_PALLET[" + index + "]", function (prog, kv, type, val) {
+          cellPallet.innerHTML = formatPallet(val);
+        });
+      }
+
+      // Event Listeners
+      window.onload = function () {
+        loadAllModels();
+      };
+    </script>
+  </body>
+</html>

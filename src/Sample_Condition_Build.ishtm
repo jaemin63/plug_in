@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>DN Solutions | Condition Manager</title>
+    <title>DN Solutions | Build I/F Condition</title>
     <meta charset="<!-- #echo var={_CHARSET} -->" />
     <link rel="stylesheet" type="text/css" href="/frh/ihmi/ihmicomponentstyl.css" />
     <link rel="stylesheet" type="text/css" href="/frh/ihmi/ihmicomponentfrm.css" />
@@ -120,6 +120,8 @@
         cursor: pointer;
         margin-right: 4px;
         transition: background 0.2s;
+        width: 60px;
+        text-align: center;
       }
       .btn-edit:hover {
         background: #666;
@@ -133,6 +135,8 @@
         font-size: 12px;
         cursor: pointer;
         transition: background 0.2s;
+        width: 60px;
+        text-align: center;
       }
       .btn-delete:hover {
         background: #c95a28;
