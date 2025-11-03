@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DN Solutions | Model Setting</title>
+    <meta charset="<!-- #echo var={_CHARSET} -->" />
+    <link rel="stylesheet" type="text/css" href="/frh/ihmi/ihmicomponentstyl.css" />
+    <link rel="stylesheet" type="text/css" href="/frh/ihmi/ihmicomponentfrm.css" />
+    <link rel="stylesheet" type="text/css" href="Sample_Model_Setting.css" />
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div class="header">
+        <h2>Model Setting</h2>
+      </div>
+
+      <!-- Step Navigation -->
+      <div class="panel">
+        <div class="step-nav">
+          <button class="step-btn active" onclick="showStep(1)">Step 1: Select Model</button>
+          <button class="step-btn" onclick="showStep(2)">Step 2: Setup</button>
+          <button class="step-btn" onclick="showStep(3)">Step 3: Coordinates</button>
+          <button class="step-btn" onclick="showStep(4)">Step 4: Pallet</button>
+          <button class="step-btn" onclick="showStep(5)">Step 5: Confirm</button>
+        </div>
+      </div>
+
+      <!-- Step 1: Model Selection -->
+      <div class="panel step-content active" id="step1">
+        <div class="section-title">Select Model</div>
+        <div class="model-grid" id="modelGrid">
+          <!-- Models will be loaded here -->
+        </div>
+        <div class="info-box" id="selectedInfo" style="display: none">
+          <div class="info-label">Selected Model</div>
+          <div class="info-value" id="selectedModelText">-</div>
+        </div>
+        <div class="form-row">
+          <span class="form-label">Model Name</span>
+          <input type="text" id="modelName" class="form-input" maxlength="20" placeholder="Enter model name" />
+        </div>
+      </div>
+
+      <!-- Step 2: Clamp / Hand / Object -->
+      <div class="panel step-content" id="step2">
+        <div class="section-title">Clamp / Hand / Object Setup</div>
+
+        <div class="form-row">
+          <span class="form-label">Clamp Size</span>
+          <input type="number" id="clampSize" class="form-input" min="0" max="999" placeholder="Enter clamp size (mm)" />
+        </div>
+
+        <div class="form-row">
+          <span class="form-label">Hand Type</span>
+          <div class="btn-group">
+            <button class="btn-option" onclick="selectHandType(0)">Outside</button>
+            <button class="btn-option" onclick="selectHandType(1)">Inside</button>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <span class="form-label">Object Type</span>
+          <div class="btn-group">
+            <button class="btn-option" onclick="selectObjectType(0)">Cylinder</button>
+            <button class="btn-option" onclick="selectObjectType(1)">Square</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Coordinates -->
+      <div class="panel step-content" id="step3">
+        <div class="section-title">Work & Hand Coordinates</div>
+
+        <div class="coord-grid">
+          <span class="form-label">Work X</span>
+          <input type="number" id="workX" class="form-input" step="0.01" placeholder="0.00" />
+
+          <span class="form-label">Work Z</span>
+          <input type="number" id="workZ" class="form-input" step="0.01" placeholder="0.00" />
+
+          <span class="form-label">Hand X</span>
+          <input type="number" id="handX" class="form-input" step="0.01" placeholder="0.00" />
+
+          <span class="form-label">Hand Y</span>
+          <input type="number" id="handY" class="form-input" step="0.01" placeholder="0.00" />
+
+          <span class="form-label">Hand Z</span>
+          <input type="number" id="handZ" class="form-input" step="0.01" placeholder="0.00" />
+
+          <span class="form-label">W / P / R</span>
+          <div class="coord-multi">
+            <input type="number" id="handW" class="form-input" step="0.01" placeholder="W" />
+            <input type="number" id="handP" class="form-input" step="0.01" placeholder="P" />
+            <input type="number" id="handR" class="form-input" step="0.01" placeholder="R" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Pallet Selection -->
+      <div class="panel step-content" id="step4">
+        <div class="section-title">Pallet Type</div>
+        <div class="btn-group" style="flex-direction: column">
+          <button class="btn-option" onclick="selectPallet(13)">PT 100 - Slot 13</button>
+          <button class="btn-option" onclick="selectPallet(25)">PT 75 - Slot 25</button>
+          <button class="btn-option" onclick="selectPallet(41)">PT 50 - Slot 41</button>
+          <button class="btn-option" onclick="selectPallet(61)">PT 40 - Slot 61</button>
+          <button class="btn-option" onclick="selectPallet(85)">PT 30 - Slot 85</button>
+        </div>
+      </div>
+
+      <!-- Step 5: Confirmation -->
+      <div class="panel step-content" id="step5">
+        <div class="section-title">Confirm Model Configuration</div>
+        <div class="info-box">
+          <div class="info-label">Model Number</div>
+          <div class="info-value" id="confirmModel">-</div>
+        </div>
+        <div class="info-box">
+          <div class="info-label">Model Name</div>
+          <div class="info-value" id="confirmName">-</div>
+        </div>
+        <div class="info-box">
+          <div class="info-label">Clamp Size</div>
+          <div class="info-value" id="confirmClamp">-</div>
+        </div>
+        <div class="info-box">
+          <div class="info-label">Hand Type</div>
+          <div class="info-value" id="confirmHand">-</div>
+        </div>
+        <div class="info-box">
+          <div class="info-label">Object Type</div>
+          <div class="info-value" id="confirmObject">-</div>
+        </div>
+        <div class="info-box">
+          <div class="info-label">Pallet Slots</div>
+          <div class="info-value" id="confirmPallet">-</div>
+        </div>
+        <button class="btn-confirm" onclick="confirmSelection()" style="width: 100%; margin-top: 16px">SELECT AS CURRENT MODEL</button>
+      </div>
+
+      <!-- Navigation -->
+      <div class="panel">
+        <div class="nav-buttons">
+          <button class="btn-nav" id="btnPrev" onclick="prevStep()">PREV</button>
+          <button class="btn-nav" id="btnNext" onclick="nextStep()">NEXT</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="Sample_Model_Setting.js"></script>
+  </body>
+</html>

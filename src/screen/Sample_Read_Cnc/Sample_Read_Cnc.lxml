@@ -3,7 +3,7 @@
   <instruction type="normal" section="cat_plugin">
     <iconfile>SmplGrp_close.png</iconfile>
     <icontext>CNC</icontext>
-    <program>IPL_DN_SimTen_Close.pc</program>
+    <program>IPL_DN_SimTen_If.pc</program>
     <detail>
       <title>This is title</title>
       <src>Sample_Read_Cnc.stm</src>

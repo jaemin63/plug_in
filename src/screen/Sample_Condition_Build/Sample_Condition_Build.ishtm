@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DN Solutions | Build I/F Condition</title>
+    <meta charset="<!-- #echo var={_CHARSET} -->" />
+    <link rel="stylesheet" type="text/css" href="/frh/ihmi/ihmicomponentstyl.css" />
+    <link rel="stylesheet" type="text/css" href="/frh/ihmi/ihmicomponentfrm.css" />
+    <link rel="stylesheet" type="text/css" href="Sample_Condition_Build.css" />
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div class="header">
+        <h2>I/F Condition Build</h2>
+      </div>
+
+      <div class="panel">
+        <div class="section-title">
+          Conditions
+          <button class="btn-add" onclick="openAddModal()" style="float: right">Add Condition</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 50px">No</th>
+              <th style="width: 200px">Name</th>
+              <th>Expression</th>
+              <th style="width: 120px">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="conditionTableBody">
+            <!-- Rows will be loaded here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="conditionModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header" id="modalTitle">Add Condition</div>
+
+        <div class="form-group">
+          <label for="conditionName">Condition Name</label>
+          <input type="text" id="conditionName" maxlength="32" placeholder="Enter condition name" />
+        </div>
+
+        <div class="form-group">
+          <label>Condition Expression</label>
+          <div id="conditionZone" class="condition-zone empty"></div>
+        </div>
+
+        <div class="signal-section">
+          <div class="signal-section-title">Signals</div>
+          <div class="tabs">
+            <div class="tab active" onclick="switchTab('DI')">Input (DI)</div>
+            <div class="tab" onclick="switchTab('DO')">Output (DO)</div>
+          </div>
+
+          <div id="tab-DI" class="tab-content active">
+            <div id="diSignalList" class="signal-list">
+              <!-- DI signals will be loaded here -->
+            </div>
+          </div>
+
+          <div id="tab-DO" class="tab-content">
+            <div id="doSignalList" class="signal-list">
+              <!-- DO signals will be loaded here -->
+            </div>
+          </div>
+        </div>
+
+        <div class="signal-section">
+          <div class="signal-section-title">Logical Operators</div>
+          <div class="signal-list">
+            <div class="draggable-item operator" draggable="true" data-value="(">(</div>
+            <div class="draggable-item operator" draggable="true" data-value=")">)</div>
+            <div class="draggable-item operator" draggable="true" data-value="AND">AND</div>
+            <div class="draggable-item operator" draggable="true" data-value="OR">OR</div>
+            <div class="draggable-item operator" draggable="true" data-value="NOT">NOT</div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-modal btn-cancel" onclick="closeModal()">Cancel</button>
+          <button class="btn-modal btn-ok" onclick="saveCondition()">OK</button>
+        </div>
+      </div>
+    </div>
+    <script src="Sample_Condition_Build.js"></script>
+  </body>
+</html>

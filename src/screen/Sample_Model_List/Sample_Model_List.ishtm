@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DN Solutions | Model List</title>
+    <meta charset="<!-- #echo var={_CHARSET} -->" />
+    <link rel="stylesheet" type="text/css" href="/frh/ihmi/ihmicomponentstyl.css" />
+    <link rel="stylesheet" type="text/css" href="/frh/ihmi/ihmicomponentfrm.css" />
+    <link rel="stylesheet" type="text/css" href="Sample_Model_List.css" />
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div class="header">
+        <h2>Model List</h2>
+        <button class="btn-refresh" onclick="loadAllModels()">Refresh</button>
+      </div>
+
+      <!-- Current Model Display -->
+      <div class="current-model">
+        <span class="current-model-label">CURRENT MODEL:</span>
+        <span class="current-model-value" id="currentModelDisplay">-</span>
+      </div>
+
+      <!-- Model Table -->
+      <div class="panel">
+        <div class="section-title">All Models (1-15)</div>
+        <table>
+          <thead>
+            <tr>
+              <th class="col-no">No.</th>
+              <th class="col-name">Name</th>
+              <th class="col-clamp">Clamp (mm)</th>
+              <th class="col-type">Hand Type</th>
+              <th class="col-type">Object Type</th>
+              <th class="col-coord">Work X</th>
+              <th class="col-coord">Work Z</th>
+              <th class="col-coord">Hand X</th>
+              <th class="col-coord">Hand Y</th>
+              <th class="col-coord">Hand Z</th>
+              <th class="col-coord">W</th>
+              <th class="col-coord">P</th>
+              <th class="col-coord">R</th>
+              <th class="col-pallet">Pallet Slots</th>
+            </tr>
+          </thead>
+          <tbody id="modelTableBody">
+            <!-- Model rows will be loaded here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script src="Sample_Model_List.js"></script>
+  </body>
+</html>

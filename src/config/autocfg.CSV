@@ -4,7 +4,7 @@ PLGID,DN_SimTen,01.10.00,!!!!,,
 DESCFILE,DESCRIPTION.HTM,sample_img_a.png,sample_img_b.png,readme.htm,!!!!
 ,,,,,
 LOAD,IPL_DN_SimTen_Cfg.PC,!!!!,,,
-LOAD,IPL_DN_SimTen_Close.PC,!!!!,,,
+LOAD,IPL_DN_SimTen_If.PC,!!!!,,,
 ,,,,,
 
 ,,,,,
