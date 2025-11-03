@@ -1,0 +1,80 @@
+PROGRAM IPL_DN_SimTen_Close
+%COMMENT = 'FANUC_SmplGrp'
+%NOLOCKGROUP
+%NOPAUSE = ERROR + COMMAND + TPENABLE 
+%NOABORT = ERROR + COMMAND 
+
+VAR
+  SELSIG IN CMOS FROM IPL_DN_SmplGrp_Cfg2 : INTEGER
+  OPENDO IN CMOS FROM IPL_DN_SmplGrp_Cfg2 : INTEGER
+  CLOSDO IN CMOS FROM IPL_DN_SmplGrp_Cfg2 : INTEGER
+  STATDI IN CMOS FROM IPL_DN_SmplGrp_Cfg2 : INTEGER
+
+  arg1 : INTEGER    -- List Select Param
+  arg2 : REAL       -- Param1
+  arg3 : INTEGER    -- Param2
+  arg4 : INTEGER    -- Connection Interface Type
+  arg5 : STRING[35] -- Alarm Text
+  
+  num : INTEGER
+  data_type : INTEGER
+  int_value : INTEGER
+  real_value : REAL
+  str_value : STRING[35]
+  ri_value : INTEGER
+  status : INTEGER
+
+ROUTINE IPL_ERPOST( PluginID: STRING;
+                    AlarmNumber: INTEGER;
+                    Cause_code: INTEGER;
+                    Param: STRING;
+                    Format: INTEGER) FROM IPL_FANUC_sys_erpost
+  
+BEGIN
+
+  -- Get Arguments 1 to 5
+  GET_TPE_PRM(1, data_type, arg1,      real_value, str_value, status)
+  GET_TPE_PRM(2, data_type, int_value, arg2,       str_value, status)
+  GET_TPE_PRM(3, data_type, arg3,      real_value, str_value, status)
+  GET_TPE_PRM(4, data_type, arg4,      real_value, str_value, status)
+  GET_TPE_PRM(5, data_type, int_value, real_value, arg5,      status)
+
+  -- Check Connection Interface
+  IF (arg4 = 0) THEN
+    -- Interface is not selected
+    IPL_ERPOST('FANUC_SmplGrp', 1, 0, arg5, 0)
+  ELSE
+  
+    IF (arg4 = 1) THEN
+      -- Use DO Signal
+      -- Check Gripper Status
+      IF (DIN[STATDI] = OFF) THEN
+        -- Close Hand
+        DOUT[OPENDO] = OFF
+        DOUT[CLOSDO] = ON
+      ELSE -- When DIN[STATDI] = ON
+        -- Status error
+        -- Convert INTEGER to STRING
+        CNV_INT_STR(STATDI, 1, 0, str_value)
+        IPL_ERPOST('FANUC_SmplGrp', 2, 0, str_value, 0)
+      ENDIF
+      
+    ELSE -- arg4 = 2
+      -- Use RO Signal
+      -- Check Gripper Status
+      GET_PORT_VAL(8, 1, ri_value, status)
+      IF (status = 0) THEN
+        IF (ri_value = 0) THEN -- When RI[1] = OFF
+          SET_PORT_VAL(9, 1, 0, status) -- RO[1] = OFF
+          SET_PORT_VAL(9, 2, 1, status) -- RO[2] = ON
+        ELSE -- When RI[1] = ON
+          -- Status error
+          IPL_ERPOST('FANUC_SmplGrp', 3, 0, '', 0)
+        ENDIF
+      ENDIF
+    ENDIF
+    
+  ENDIF
+
+END IPL_DN_SimTen_Close
+
