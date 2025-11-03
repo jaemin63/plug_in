@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>DN Solutions | DI[1~10] Monitor (Standard HTML)</title>
+    <title>DN Solutions | DI/DO Define</title>
     <meta charset="<!-- #echo var={_CHARSET} -->" />
     <link rel="stylesheet" type="text/css" href="/frh/ihmi/ihmicomponentstyl.css" />
     <link rel="stylesheet" type="text/css" href="/frh/ihmi/ihmicomponentfrm.css" />
@@ -141,8 +141,9 @@
         white-space: nowrap;
       }
       .start-input {
-        width: 150px;
+        width: 120px;
         flex-shrink: 0;
+        padding: 8px 12px;
       }
       .th {
         font-weight: 700;
@@ -517,8 +518,9 @@
 
         const offset = calculateOffset(startEl.value, addrEl.value, bitEl.value);
 
-        // Display as "DI[10000+offset]" or "DO[10000+offset]"
-        const displayValue = prefix + "[" + (10000 + offset) + "]";
+        // Display as "DI[10000+offset]" or "DO[20000+offset]"
+        const baseAddress = (prefix === "DO") ? 20000 : 10000;
+        const displayValue = prefix + "[" + (baseAddress + offset) + "]";
         offsetEl.value = displayValue;
 
         // Write offset to KAREL
@@ -535,7 +537,7 @@
         // Read initial value from KAREL
         ihmiGet(kvar, (kprog, kv, type, val) => {
           el.value = val ?? "";
-          log("BOUND " + domId + " ↔ " + kvar + " | READ=" + val);
+          log("BOUND " + domId + " <=> " + kvar + " | READ=" + val);
 
           // If this is ADDR or BIT, calculate offset
           const match = domId.match(/(DI|DO)_(ADDR|BIT)_(\d+)/);
@@ -675,12 +677,12 @@
           const next = cur ? 0 : 1;
           ihmiSet("EDIT_ENABLE", next);
           updateInputsState(next === 1);
-          log("Edit Mode: " + (next === 1 ? "ENABLED ✓" : "DISABLED ✗"));
+          log("Edit Mode: " + (next === 1 ? "ENABLED" : "DISABLED"));
         });
       }
 
       window.onload = () => {
-        log("🚀 System Loaded. Auto-bind DI[1~10] and DO[1~10].");
+        log("System Loaded. Auto-bind DI[1~10] and DO[1~10].");
         readEdit();
         bindAll();
       };
