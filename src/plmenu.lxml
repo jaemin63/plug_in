@@ -1,0 +1,3 @@
+<FanucMenu Name="DN_SmplGrp">
+<FanucMenuItem Header="DN Solutions Sample" Screen="DN_SmplGrp/Sample_Config.stm" />
+</FanucMenu>

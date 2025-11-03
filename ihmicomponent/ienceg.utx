@@ -1,0 +1,24 @@
+* (C) 2018 FANUC CORPORATION and FANUC America Corporation. All Rights Reserved. 
+* 
+* All rights in and to this material are expressly reserved by FANUC CORPORATION
+* and FANUC America Corporation. Unless otherwise separately agreed to by FANUC 
+* CORPORATION or FANUC America Corporation, in no event shall any rights in or 
+* to this material, including but not limited to proprietary or intellectual 
+* property rights, be transferred or licensed to any other parties.
+*
+*  Description: iHMI Component Encoding Dictionary
+*
+*  Source File: iencxx.utx
+*
+* Generate /vob/environment/ienc.hc
+.hc ienc
+
+.lit
+
+#define IENC_DEFAULT_XML_ENCODING "iso-8859-1"
+
+.end
+
+$-, ienc_name         "Latin1"
+$-, ienc_html_charset "iso-8859-1"
+$-, ienc_xml_encoding "iso-8859-1"

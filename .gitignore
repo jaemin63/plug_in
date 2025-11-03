@@ -1,0 +1,19 @@
+# IPL files
+*.ipl
+.ipl/
+
+# Output directory
+output/
+
+# Claude Code
+.claude/
+
+# Eclipse settings
+.settings/
+
+# Other common files
+*.log
+*.tmp
+*~
+.DS_Store
+Thumbs.db

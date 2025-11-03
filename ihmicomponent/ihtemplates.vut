@@ -1,0 +1,197 @@
+/* v00015 */
+/* 
+* (C) 2018 FANUC CORPORATION and FANUC America Corporation. All Rights Reserved. 
+* 
+* All rights in and to this material are expressly reserved by FANUC CORPORATION
+* and FANUC America Corporation. Unless otherwise separately agreed to by FANUC 
+* CORPORATION or FANUC America Corporation, in no event shall any rights in or 
+* to this material, including but not limited to proprietary or intellectual 
+* property rights, be transferred or licensed to any other parties.
+*/
+//////////////////////////////////////////////////////////////////////////////////
+// select
+//   [designpattern (String) "touch" or "mouse"]
+//   [width (String)]
+//   [class (String)]
+//   [invalidColorRed03 (Boolean)]
+//////////////////////////////////////////////////////////////////////////////////
+<% template select %>
+  <span id="$(id)" class="select<% if designpattern %> $(designpattern)<% end %><% if class %> $(class)<% end %>">
+    <div <% if width %> style="width: $(width);"<% end %>>
+      <label id="$(id).label" class="select-label<% if width %> select-fixed-width<% end %><% if class %> $(class)<% end %>"></label>
+      <ul id="$(id).options" class="select-options hide">
+        $(body)
+      </ul>
+      <button class="select-button"><ins class="select-arrow"></ins></button>
+    </div>
+  </span>
+<% end %>
+
+//////////////////////////////////////////////////////////////////////////////////
+// selectOption
+//   value (String)
+//   [class (String)]
+//   [image (String)]
+//////////////////////////////////////////////////////////////////////////////////
+<% template selectOption %>
+  <li class="select-option<% if class %> $(class)<% end %>" data-value="$(value)">
+    <a href="javascript:void(0);">
+      <% if image %>
+        <img src="$(image)" class="select-option-icon" align="absmiddle">
+      <% end %><!--
+      -->$(body)<!--
+    --></a>
+  </li>
+<% end %>
+
+//////////////////////////////////////////////////////////////////////////////////
+// button
+//   [designpattern (String) "touch" or "mouse"]
+//   [class (String)]
+//   [classtext (String)]
+//   [width (String)]
+//   [height (String)]
+//   [image (String)]
+//   [tooltip (String)]
+//   [spriteleft (String)]
+//   [imageleft (String)]
+//   [spriteright (String)]
+//   [imageright (String)]
+//   [classleftimage (String)]
+//   [classrightimage (String)]
+//   [onclick (String)]
+//////////////////////////////////////////////////////////////////////////////////
+<% template button %>
+  <button id="$(id)" class="button<% if designpattern %> $(designpattern)<% end %><% if class %> $(class)<% end %>" style="<% if width %>width: $(width);<% end %><% if height %>height: $(height);<% end %><% if image %>background-image: url($(image)); background-repeat: no-repeat; background-position: center 0;<% end %>"<% if tooltip %> title="$(tooltip)"<% end %><% if onclick %> onclick="$(onclick)"<% end %>>
+    <% if spriteleft %>
+    <span class="image-button-spriteleft $(spriteleft)"></span>
+    <% end %>
+    <% if imageleft %>
+    <img id="$(id).imageleft" src="$(imageleft)" style="vertical-align: middle;"<% end %><% if classleftimage %> class="$(classleftimage)"<% end %><% if imageleft %>>
+    <% end %>
+    <% if vertical %><br><% end %>
+    <span id="$(id).text" class="button-text<% if width %> button-text-fixed-width<% end %><% if classtext %> $(classtext)<% end %>">$(body)</span><!--
+    <% if spriteright %>
+    --><span class="image-button-spriteright $(spriteright)"></span><!--
+    <% end %>
+    <% if imageright %>
+    --><img id="$(id).imageright" src="$(imageright)" style="vertical-align: middle;"<% end %><% if classrightimage %> class="$(classrightimage)"<% end %><% if imageright %>><!--
+    <% end %>
+  --></button>
+<% end %>
+
+//////////////////////////////////////////////////////////////////////////////////
+// textboxReal
+//   [designpattern (String) "touch" or "mouse"]
+//   [size (Integer)]
+//   decimals (Integer)
+//   [height (String)]
+//   [width (String)]
+//   [units (String)]
+//   [conversion (String)] "degree" or "percent" or "millesimal"
+//   [buttons (String)] "scale" or "scale2" or "step" or "step2" 
+//   [step1 (Real)]
+//   [step2 (Real)]
+//   [scale1 (Real)]
+//   [scale2 (Real)]
+//   [outOfRangeTextColor (String)]
+//   [errPopClass (String)]
+//   [errPopPos (Integer)]
+//   [errPopAddFuncKey (Boolean)]
+//   [errPopWindowAlert (Boolean)]
+//   [inputType (String)]
+//   [unSelect (Boolean)]
+//////////////////////////////////////////////////////////////////////////////////
+<% template textboxReal %>
+  <span id="$(id)" class="textbox<% if designpattern %> $(designpattern)<% end %>">
+    <input type="text" id="$(id).textbox" class="numeric" style="<% if width %>width: $(width);<% end %><% if height %> height: $(height); line-height: $(height);<% end %>"<% if size %> size="$(size)"<% end %><% if unSelect %> unSelect="$(unSelect)"<% end %>></input>
+    <% if units %>
+      <label class="text units<% end %><% if units %>">$(units)</label>
+    <% end %>
+    <% if buttons %>
+      <span>
+        <ihmi type="button" id="$(id).btnDec2" spriteleft="ihmicomponent-btn-dec2" class="inc-dec-button hide" onclick="return true;"></ihmi>
+        <ihmi type="button" id="$(id).btnDec" spriteleft="ihmicomponent-btn-dec1" class="inc-dec-button" onclick="return true;"></ihmi>
+        <ihmi type="button" id="$(id).btnInc" spriteleft="ihmicomponent-btn-inc1" class="inc-dec-button" onclick="return true;"></ihmi>
+        <ihmi type="button" id="$(id).btnInc2" spriteleft="ihmicomponent-btn-inc2" class="inc-dec-button hide" onclick="return true;"></ihmi>
+      </span>
+    <% end %>
+  </span>
+<% end %>
+
+//////////////////////////////////////////////////////////////////////////////////
+// textboxInteger
+//   [designpattern (String) "touch" or "mouse"]
+//   [size (Integer)]
+//   [height (String)]
+//   [width (String)]
+//   [units (String)]
+//   [buttons (String)]  "step" or "step2"
+//   [step1 (Integer)]
+//   [step2 (Integer)]
+//   [outOfRangeTextColor (String)]
+//   [errPopClass (String)]
+//   [errPopPos (Integer)]
+//   [errPopAddFuncKey (Boolean)]
+//   [errPopWindowAlert (Boolean)]
+//   [inputType (String)]
+//   [unSelect (Boolean)]
+//////////////////////////////////////////////////////////////////////////////////
+<% template textboxInteger %>
+  <span id="$(id)" class="textbox<% if designpattern %> $(designpattern)<% end %>">
+    <input type="text" id="$(id).textbox" class="numeric" style="<% if width %>width: $(width);<% end %><% if height %> height: $(height); line-height: $(height);<% end %>"<% if size %> size="$(size)"<% end %><% if unSelect %> unSelect="$(unSelect)"<% end %>></input>
+    <% if units %>
+      <label class="text units<% end %><% if units %>">$(units)</label>
+    <% end %>
+    <% if buttons %>
+      <span>
+        <ihmi type="button" id="$(id).btnDec2" spriteleft="ihmicomponent-btn-dec2" class="inc-dec-button hide" onclick="return true;"></ihmi>
+        <ihmi type="button" id="$(id).btnDec" spriteleft="ihmicomponent-btn-dec1" class="inc-dec-button" onclick="return true;"></ihmi>
+        <ihmi type="button" id="$(id).btnInc" spriteleft="ihmicomponent-btn-inc1" class="inc-dec-button" onclick="return true;"></ihmi>
+        <ihmi type="button" id="$(id).btnInc2" spriteleft="ihmicomponent-btn-inc2" class="inc-dec-button hide" onclick="return true;"></ihmi>
+      </span>
+    <% end %>
+  </span>
+<% end %>
+
+//////////////////////////////////////////////////////////////////////////////////
+// textboxString
+//   [designpattern (String) "touch" or "mouse"]
+//   mode (String)  "dataname" or "datanamefilter" or "comment" or "path" or "filepath"
+//   [size (Integer)]
+//   [height (String)]
+//   [width (String)]
+//   [errPopClass (String)]
+//   [errPopPos (Integer)]
+//   [errPopAddFuncKey (Boolean)]
+//   [errPopWindowAlert (Boolean)]
+//   [unSelect (Boolean)]
+//////////////////////////////////////////////////////////////////////////////////
+<% template textboxString %>
+  <input type="text" id="$(id)" class="text textbox<% if designpattern %> $(designpattern)<% end %>" style="<% if width %>width: $(width);<% end %><% if height %> height: $(height); line-height: $(height);<% end %>"<% if size %> size="$(size)"<% end %><% if unSelect %> unSelect="$(unSelect)"<% end %>></input>
+<% end %>
+
+//////////////////////////////////////////////////////////////////////////////////
+// listSelect
+//   [designpattern (String) "touch" or "mouse"]
+//   [class (String)] class name
+//   [horizontal (String)] "true" or "false"
+//   [icon (String)] "true" or "false"
+//////////////////////////////////////////////////////////////////////////////////
+<% template listSelect %>
+  <div id="$(id)" class="list-select<% if designpattern %> $(designpattern)<% end %><% if class %> $(class)<% end %><% if horizontal %> list-select-horizontal<% end %>">
+    <ul>
+      $(body)
+    </ul>
+    <% if horizontal %><div class="clearfix hide"></div><% end %>
+  </div>
+<% end %>
+
+//////////////////////////////////////////////////////////////////////////////////
+// listSelectOption
+//   [class (String)] class name
+//   [width (String)]
+//////////////////////////////////////////////////////////////////////////////////
+<% template listSelectOption %>
+  <li class="list-select-option<% if class %> $(class)<% end %>" data-value="$(value)" tabindex="0" <% if width %>style="width: $(width);"<% end %>><div class="list-select-option-left"><ins class="list-select-mark ihmicomponent-large-radiomark-off"></ins></div><div class="list-select-option-right">$(body)</div></li>
+<% end %>

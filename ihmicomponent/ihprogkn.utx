@@ -1,0 +1,20 @@
+* (C) 2018 FANUC CORPORATION and FANUC America Corporation. All Rights Reserved. 
+* 
+* All rights in and to this material are expressly reserved by FANUC CORPORATION
+* and FANUC America Corporation. Unless otherwise separately agreed to by FANUC 
+* CORPORATION or FANUC America Corporation, in no event shall any rights in or 
+* to this material, including but not limited to proprietary or intellectual 
+* property rights, be transferred or licensed to any other parties.
+*
+*  File: ihprogkn.utx
+*
+*  Description: Dictionary text for iHMI Component (for robot program)
+*               This text is used by the build tools so does not
+*               need to be loaded on the controller.
+*
+* for LXML
+$-, ihprog_valp_c          "²Á"
+$-, ihprog_valregr_c       "Ú¼Þ"
+$-, ihprog_valregprax_c    "²ÁÚ¼Þ"
+$-, ihprog_valregsr_c      "Ó¼ÞÚ¼Þ"
+$-, ihprog_valregar_c      "Ë·½³"

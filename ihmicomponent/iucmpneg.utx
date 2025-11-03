@@ -1,0 +1,53 @@
+* (C) 2018 FANUC CORPORATION and FANUC America Corporation. All Rights Reserved. 
+* 
+* All rights in and to this material are expressly reserved by FANUC CORPORATION
+* and FANUC America Corporation. Unless otherwise separately agreed to by FANUC 
+* CORPORATION or FANUC America Corporation, in no event shall any rights in or 
+* to this material, including but not limited to proprietary or intellectual 
+* property rights, be transferred or licensed to any other parties.
+*
+* File: iucmpneg.utx
+*
+* Description: Dictionary text for iHMI Component
+*               This text is used by the build tools so does not
+*               need to be loaded on the controller.
+*
+
+$-, iuif_expo_auto_c               "Auto"
+$-, iuif_not_selected_c            "Not Selected"
+$-, iuif_out_of_range_c            "%s is out of range.\n(%s - %s)"
+$-, iuif_invalid_number_c          "This string is not a number."
+$-, iuif_this_robot_c              "This Robot"
+$-, iuif_rob_group_num_c           "Group"
+$-, iuif_too_short_string_c        "String is too short."
+$-, iuif_too_long_string_c         "The string is too long."
+$-, iuif_invalid_path_char_c       "The string contains an invalid character."
+$-, iuif_invalid_prog_char_c       "The string contains an invalid character."
+$-, iuif_invalid_chars_c           "The string cannot contain the following characters: &'\"/\\"
+$-, iuif_invalid_device_c          "The device name is invalid."
+$-, iuif_invalid_prog_first_char_c "The first character cannot be a number."
+$-, iuif_ajax_loading_c            "Processing..."
+$-, iuif_fail_connect_c            "Fail to connect the controller."
+$-, iuif_timeout_c                 "Vision Setup has been disconnected."
+$-, iuif_expo_out_of_range_c       "Limit"
+$-, iuif_change_c                  "change"
+$-, iuif_guide_steps_total_c       "Total steps:&nbsp;"
+$-, iuif_error_c                   "Error"
+$-, iuif_message_loading_c         "Now Loading..."
+
+* Common items on setup pages
+$-, iuif_model_train_button_c      "Teach"
+$-, iuif_dof_enabled_c             'Enable'
+$-, iuif_dof_minimum_c             'Min.'
+$-, iuif_dof_maximum_c             'Max.'
+
+* Common units
+$-, iuif_units_percent_c           '%'
+$-, iuif_units_degrees_c           "&deg;"
+
+* Common headers
+$-, iuif_header_scale_c           "Scale"
+$-, iuif_header_angle_c           "Angle"
+
+* Common items in calibration data
+$-, iuif_inaccurate_focal_c        "These distances may be inaccurate.  Override the standoff distance or the focal distance to improve the accuracy."

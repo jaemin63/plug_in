@@ -1,0 +1,54 @@
+* (C) 2018 FANUC CORPORATION and FANUC America Corporation. All Rights Reserved. 
+* 
+* All rights in and to this material are expressly reserved by FANUC CORPORATION
+* and FANUC America Corporation. Unless otherwise separately agreed to by FANUC 
+* CORPORATION or FANUC America Corporation, in no event shall any rights in or 
+* to this material, including but not limited to proprietary or intellectual 
+* property rights, be transferred or licensed to any other parties.
+*
+*  File: iucmpnch.utx
+*
+*  Description: Dictionary text for iHMI Component
+*               This text is used by the build tools so does not
+*               need to be loaded on the controller.
+*
+* -*-coding:chinese-iso-8bit-*-
+
+$-, iuif_expo_auto_c               '自动'
+$-, iuif_not_selected_c            '请选择'
+$-, iuif_out_of_range_c            '%s超出范围\n(%s - %s)'
+$-, iuif_invalid_number_c          '请输入数值。'
+$-, iuif_this_robot_c              '这台机器人'
+$-, iuif_rob_group_num_c           '组'
+$-, iuif_too_short_string_c        '输入的字符串过短。'
+$-, iuif_too_long_string_c         '输入的字符串过长。'
+$-, iuif_invalid_path_char_c       '不正确的字符串被使用。'
+$-, iuif_invalid_prog_char_c       '不正确的字符串被使用。'
+$-, iuif_invalid_chars_c           "不能使用以下的字符串。\n&'\"/\\"
+$-, iuif_invalid_device_c          '设备名称不正确。'
+$-, iuif_invalid_prog_first_char_c '程序名称的开始文字不能使用数字。'
+$-, iuif_ajax_loading_c            '处理中…'
+$-, iuif_fail_connect_c            '和控制装置的连接失败。'
+$-, iuif_timeout_c                 '和控制装置的连接被断开。'
+$-, iuif_expo_out_of_range_c       '范围外'
+$-, iuif_change_c                  '修改'
+$-, iuif_guide_steps_total_c       "合计步骤:&nbsp;"
+$-, iuif_error_c                   "错误"
+$-, iuif_message_loading_c         '正在加载。请稍等。'
+
+* Common items on setup pages
+$-, iuif_model_train_button_c      '模型示教'
+$-, iuif_dof_enabled_c             '有效'
+$-, iuif_dof_minimum_c             '最小'
+$-, iuif_dof_maximum_c             '最大'
+
+* Common units
+$-, iuif_units_percent_c           '%'
+$-, iuif_units_degrees_c           "&deg;"
+
+* Common headers
+$-, iuif_header_scale_c           '大小'
+$-, iuif_header_angle_c           '角度'
+
+* Common items in calibration data
+$-, iuif_inaccurate_focal_c        '计算结果可能不正确。请指定焦点距离或基准距离。'

@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DN Solutions | Condition Manager</title>
+    <meta charset="<!-- #echo var={_CHARSET} -->" />
+    <link rel="stylesheet" type="text/css" href="/frh/ihmi/ihmicomponentstyl.css" />
+    <link rel="stylesheet" type="text/css" href="/frh/ihmi/ihmicomponentfrm.css" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f5f5f5;
+        min-height: 100vh;
+      }
+      .wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+      .header {
+        background: white;
+        padding: 20px 24px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        margin-bottom: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .header h2 {
+        margin: 0;
+        color: #333;
+        font-size: 22px;
+        font-weight: 600;
+      }
+      .btn-nav {
+        padding: 10px 20px;
+        background: #555;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.2s;
+      }
+      .btn-nav:hover {
+        background: #333;
+      }
+      .panel {
+        background: white;
+        border-radius: 8px;
+        padding: 24px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      }
+      .section-title {
+        font-weight: 700;
+        color: #555;
+        font-size: 16px;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #e0e0e0;
+      }
+
+      /* Table */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+      }
+      th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #e0e0e0;
+      }
+      th {
+        background: #f5f5f5;
+        font-weight: 600;
+        color: #555;
+        font-size: 14px;
+      }
+      td {
+        font-size: 14px;
+        color: #333;
+      }
+      tr:hover {
+        background: #fafafa;
+      }
+
+      /* Buttons */
+      .btn-add {
+        padding: 8px 16px;
+        background: #4a90e2;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .btn-add:hover {
+        background: #357abd;
+      }
+      .btn-edit {
+        padding: 6px 12px;
+        background: #888;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 12px;
+        cursor: pointer;
+        margin-right: 4px;
+        transition: background 0.2s;
+      }
+      .btn-edit:hover {
+        background: #666;
+      }
+      .btn-delete {
+        padding: 6px 12px;
+        background: #e27d4a;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .btn-delete:hover {
+        background: #c95a28;
+      }
+
+      /* Modal */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        overflow: auto;
+      }
+      .modal.active {
+        display: block;
+      }
+      .modal-content {
+        background: white;
+        margin: 40px auto;
+        padding: 24px;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 900px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+      .modal-header {
+        font-size: 20px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid #e0e0e0;
+      }
+      .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 20px;
+        padding-top: 16px;
+        border-top: 1px solid #e0e0e0;
+      }
+      .btn-modal {
+        padding: 10px 24px;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn-ok {
+        background: #4a90e2;
+        color: white;
+      }
+      .btn-ok:hover {
+        background: #357abd;
+      }
+      .btn-cancel {
+        background: #d0d0d0;
+        color: #555;
+      }
+      .btn-cancel:hover {
+        background: #b0b0b0;
+      }
+
+      /* Form */
+      .form-group {
+        margin-bottom: 16px;
+      }
+      .form-group label {
+        display: block;
+        font-weight: 600;
+        color: #555;
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+      .form-group input[type="text"] {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+      }
+
+      /* Condition Builder in Modal */
+      .condition-zone {
+        min-height: 60px;
+        padding: 12px;
+        border: 2px dashed #ccc;
+        border-radius: 8px;
+        background: #fafafa;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: center;
+        transition: all 0.2s;
+        margin-bottom: 16px;
+      }
+      .condition-zone.drag-over {
+        border-color: #666;
+        background: #f0f0f0;
+      }
+      .condition-zone.empty::before {
+        content: "Drag signals and operators here";
+        color: #aaa;
+        font-style: italic;
+        font-size: 13px;
+      }
+
+      /* Draggable Items */
+      .draggable-item {
+        padding: 6px 12px;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        cursor: grab;
+        font-weight: 500;
+        font-size: 13px;
+        transition: all 0.2s;
+        user-select: none;
+      }
+      .draggable-item:hover {
+        background: #f5f5f5;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .draggable-item:active {
+        cursor: grabbing;
+      }
+      .draggable-item.signal-di {
+        border-color: #4a90e2;
+        color: #4a90e2;
+      }
+      .draggable-item.signal-do {
+        border-color: #e27d4a;
+        color: #e27d4a;
+      }
+      .draggable-item.operator {
+        border-color: #888;
+        color: #555;
+        background: #e8e8e8;
+      }
+
+      /* Condition Items */
+      .condition-item {
+        padding: 6px 12px;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-weight: 500;
+        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        cursor: grab;
+        user-select: none;
+      }
+      .condition-item:active {
+        cursor: grabbing;
+      }
+      .condition-item.dragging {
+        opacity: 0.5;
+      }
+      .condition-item.signal-di {
+        border-color: #4a90e2;
+        color: #4a90e2;
+        background: #e8f4ff;
+      }
+      .condition-item.signal-do {
+        border-color: #e27d4a;
+        color: #e27d4a;
+        background: #fff4e8;
+      }
+      .condition-item.operator {
+        border-color: #7b68ee;
+        color: #7b68ee;
+        background: #f0edff;
+      }
+
+      /* Signal Lists */
+      .signal-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 12px;
+      }
+      .signal-section {
+        margin-bottom: 16px;
+      }
+      .signal-section-title {
+        font-weight: 600;
+        color: #555;
+        font-size: 13px;
+        margin-bottom: 8px;
+      }
+
+      /* Tabs */
+      .tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .tab {
+        flex: 1;
+        padding: 8px 16px;
+        cursor: pointer;
+        background: transparent;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        color: #888;
+        font-size: 14px;
+        transition: all 0.2s;
+        text-align: center;
+      }
+      .tab:hover {
+        background: #f5f5f5;
+        color: #555;
+      }
+      .tab.active {
+        background: #555;
+        color: white;
+      }
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div class="header">
+        <h2>Condition Manager</h2>
+        <a href="Sample_Monitor.stm" class="btn-nav">Back to Monitor</a>
+      </div>
+
+      <div class="panel">
+        <div class="section-title">
+          Conditions
+          <button class="btn-add" onclick="openAddModal()" style="float: right;">Add Condition</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 50px;">No</th>
+              <th style="width: 200px;">Name</th>
+              <th>Expression</th>
+              <th style="width: 120px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="conditionTableBody">
+            <!-- Rows will be loaded here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="conditionModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header" id="modalTitle">Add Condition</div>
+
+        <div class="form-group">
+          <label for="conditionName">Condition Name</label>
+          <input type="text" id="conditionName" maxlength="32" placeholder="Enter condition name" />
+        </div>
+
+        <div class="form-group">
+          <label>Condition Expression</label>
+          <div id="conditionZone" class="condition-zone empty"></div>
+        </div>
+
+        <div class="signal-section">
+          <div class="signal-section-title">Signals</div>
+          <div class="tabs">
+            <div class="tab active" onclick="switchTab('DI')">Input (DI)</div>
+            <div class="tab" onclick="switchTab('DO')">Output (DO)</div>
+          </div>
+
+          <div id="tab-DI" class="tab-content active">
+            <div id="diSignalList" class="signal-list">
+              <!-- DI signals will be loaded here -->
+            </div>
+          </div>
+
+          <div id="tab-DO" class="tab-content">
+            <div id="doSignalList" class="signal-list">
+              <!-- DO signals will be loaded here -->
+            </div>
+          </div>
+        </div>
+
+        <div class="signal-section">
+          <div class="signal-section-title">Logical Operators</div>
+          <div class="signal-list">
+            <div class="draggable-item operator" draggable="true" data-value="(">(</div>
+            <div class="draggable-item operator" draggable="true" data-value=")">)</div>
+            <div class="draggable-item operator" draggable="true" data-value="AND">AND</div>
+            <div class="draggable-item operator" draggable="true" data-value="OR">OR</div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-modal btn-cancel" onclick="closeModal()">Cancel</button>
+          <button class="btn-modal btn-ok" onclick="saveCondition()">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ========================================
+      // Karel 프로그램 설정
+      // ========================================
+      var KAREL_PROGRAM_NAME = "IPL_DN_SmplGrp_Cfg";
+      var conditionItems = [];
+      var currentEditIndex = -1; // -1 means new, 0-9 means edit
+      var draggedOutside = false;
+
+      // ========================================
+      // ihmi init 함수 (필수)
+      // ========================================
+      function init() {
+        // ihmi 초기화 - 필수 함수
+      }
+
+      // ========================================
+      // ihmi_getVar 헬퍼 함수
+      // ========================================
+      function ihmiGet(kvar, cb) {
+        try {
+          top.ihmi_getVar(KAREL_PROGRAM_NAME, kvar, cb);
+        } catch (e) {
+          console.error("ihmi_getVar error " + kvar + ": " + e);
+        }
+      }
+
+      // ========================================
+      // ihmi_setVar 헬퍼 함수
+      // ========================================
+      function ihmiSet(kvar, value) {
+        try {
+          top.ihmi_setVar(KAREL_PROGRAM_NAME, kvar, value);
+        } catch (e) {
+          console.error("ihmi_setVar error " + kvar + ": " + e);
+        }
+      }
+
+      // ========================================
+      // 탭 전환
+      // ========================================
+      function switchTab(tabName) {
+        var tabs = document.querySelectorAll(".tab");
+        tabs.forEach(function(tab) {
+          tab.classList.remove("active");
+        });
+
+        var tabContents = document.querySelectorAll(".tab-content");
+        tabContents.forEach(function(content) {
+          content.classList.remove("active");
+        });
+
+        event.target.classList.add("active");
+        document.getElementById("tab-" + tabName).classList.add("active");
+      }
+
+      // ========================================
+      // Condition Zone 업데이트
+      // ========================================
+      function updateConditionZone() {
+        var zone = document.getElementById("conditionZone");
+        zone.innerHTML = "";
+
+        if (conditionItems.length === 0) {
+          zone.classList.add("empty");
+        } else {
+          zone.classList.remove("empty");
+
+          conditionItems.forEach(function(item, index) {
+            var div = document.createElement("div");
+            div.className = "condition-item " + item.type;
+            div.draggable = true;
+            div.setAttribute("data-index", index);
+            div.textContent = item.text;
+
+            div.addEventListener("dragstart", function(e) {
+              e.dataTransfer.effectAllowed = "move";
+              e.dataTransfer.setData("source-index", String(index));
+              e.dataTransfer.setData("is-reorder", "true");
+              div.classList.add("dragging");
+              draggedOutside = false;
+            });
+
+            div.addEventListener("dragend", function(e) {
+              div.classList.remove("dragging");
+
+              if (draggedOutside) {
+                var rect = zone.getBoundingClientRect();
+                if (e.clientX < rect.left || e.clientX > rect.right ||
+                    e.clientY < rect.top || e.clientY > rect.bottom) {
+                  conditionItems.splice(index, 1);
+                  updateConditionZone();
+                }
+              }
+            });
+
+            zone.appendChild(div);
+          });
+        }
+      }
+
+      // ========================================
+      // Modal 열기/닫기
+      // ========================================
+      function openAddModal() {
+        currentEditIndex = -1;
+        document.getElementById("modalTitle").textContent = "Add Condition";
+        document.getElementById("conditionName").value = "";
+        conditionItems = [];
+        updateConditionZone();
+        document.getElementById("conditionModal").classList.add("active");
+      }
+
+      function openEditModal(index) {
+        currentEditIndex = index;
+        document.getElementById("modalTitle").textContent = "Edit Condition";
+
+        ihmiGet("COND_NAME[" + (index + 1) + "]", function(kprog, kv, type, val) {
+          document.getElementById("conditionName").value = val || "";
+        });
+
+        ihmiGet("COND_EXPR[" + (index + 1) + "]", function(kprog, kv, type, val) {
+          parseConditionString(val || "");
+        });
+
+        document.getElementById("conditionModal").classList.add("active");
+      }
+
+      function closeModal() {
+        document.getElementById("conditionModal").classList.remove("active");
+        conditionItems = [];
+        currentEditIndex = -1;
+      }
+
+      // ========================================
+      // 조건 저장
+      // ========================================
+      function saveCondition() {
+        var name = document.getElementById("conditionName").value.trim();
+        var expr = conditionItems.map(function(item) {
+          return item.text;
+        }).join(" ");
+
+        if (!name) {
+          alert("Please enter a condition name.");
+          return;
+        }
+
+        if (conditionItems.length === 0) {
+          alert("Please create a condition expression.");
+          return;
+        }
+
+        if (currentEditIndex === -1) {
+          // 새로 추가: 빈 슬롯 찾기
+          findEmptySlot(function(targetIndex) {
+            if (targetIndex === -1) {
+              alert("All condition slots are full (max 10).");
+              return;
+            }
+
+            ihmiSet("COND_NAME[" + (targetIndex + 1) + "]", name);
+            ihmiSet("COND_EXPR[" + (targetIndex + 1) + "]", expr);
+
+            closeModal();
+            setTimeout(function() {
+              loadConditions();
+            }, 200);
+          });
+        } else {
+          // 기존 편집
+          ihmiSet("COND_NAME[" + (currentEditIndex + 1) + "]", name);
+          ihmiSet("COND_EXPR[" + (currentEditIndex + 1) + "]", expr);
+
+          closeModal();
+          setTimeout(function() {
+            loadConditions();
+          }, 200);
+        }
+      }
+
+      // ========================================
+      // 빈 슬롯 찾기 (비동기)
+      // ========================================
+      function findEmptySlot(callback) {
+        var loadedCount = 0;
+        var slots = [];
+
+        for (var i = 0; i < 10; i++) {
+          (function(index) {
+            ihmiGet("COND_NAME[" + (index + 1) + "]", function(kprog, kv, type, val) {
+              slots[index] = (val && val.trim() !== "") ? "occupied" : "empty";
+              loadedCount++;
+
+              if (loadedCount === 10) {
+                // 모든 슬롯 로드 완료
+                for (var j = 0; j < 10; j++) {
+                  if (slots[j] === "empty") {
+                    callback(j);
+                    return;
+                  }
+                }
+                callback(-1); // 빈 슬롯 없음
+              }
+            });
+          })(i);
+        }
+      }
+
+      // ========================================
+      // 조건 삭제
+      // ========================================
+      function deleteCondition(index) {
+        if (confirm("Are you sure you want to delete this condition?")) {
+          ihmiSet("COND_NAME[" + (index + 1) + "]", "");
+          ihmiSet("COND_EXPR[" + (index + 1) + "]", "");
+          loadConditions();
+        }
+      }
+
+      // ========================================
+      // 조건 목록 로드
+      // ========================================
+      function loadConditions() {
+        var tbody = document.getElementById("conditionTableBody");
+        tbody.innerHTML = "";
+
+        var loadedCount = 0;
+        var conditions = [];
+
+        for (var i = 0; i < 10; i++) {
+          (function(index) {
+            ihmiGet("COND_NAME[" + (index + 1) + "]", function(kprog, kv, type, name) {
+              ihmiGet("COND_EXPR[" + (index + 1) + "]", function(kprog2, kv2, type2, expr) {
+                conditions[index] = { name: name || "", expr: expr || "" };
+                loadedCount++;
+
+                if (loadedCount === 10) {
+                  renderConditions(conditions);
+                }
+              });
+            });
+          })(i);
+        }
+      }
+
+      function renderConditions(conditions) {
+        var tbody = document.getElementById("conditionTableBody");
+        tbody.innerHTML = "";
+
+        conditions.forEach(function(cond, index) {
+          if (cond.name && cond.name.trim() !== "") {
+            var tr = document.createElement("tr");
+            tr.innerHTML =
+              '<td>' + (index + 1) + '</td>' +
+              '<td>' + cond.name + '</td>' +
+              '<td>' + cond.expr + '</td>' +
+              '<td>' +
+              '<button class="btn-edit" onclick="openEditModal(' + index + ')">Edit</button>' +
+              '<button class="btn-delete" onclick="deleteCondition(' + index + ')">Delete</button>' +
+              '</td>';
+            tbody.appendChild(tr);
+          }
+        });
+
+        if (tbody.children.length === 0) {
+          var tr = document.createElement("tr");
+          tr.innerHTML = '<td colspan="4" style="text-align: center; color: #aaa;">No conditions defined</td>';
+          tbody.appendChild(tr);
+        }
+      }
+
+      // ========================================
+      // Condition 문자열 파싱
+      // ========================================
+      function parseConditionString(str) {
+        conditionItems = [];
+
+        if (!str) {
+          updateConditionZone();
+          return;
+        }
+
+        var tokens = str.split(" ");
+
+        tokens.forEach(function(token) {
+          token = token.trim();
+          if (token === "") return;
+
+          var type = "signal-di";
+
+          if (token === "(" || token === ")" || token === "AND" || token === "OR") {
+            type = "operator";
+          } else {
+            if (token.indexOf("DO") === 0) {
+              type = "signal-do";
+            } else {
+              type = "signal-di";
+            }
+          }
+
+          conditionItems.push({
+            text: token,
+            type: type
+          });
+        });
+
+        updateConditionZone();
+      }
+
+      // ========================================
+      // DI/DO 이름 로드
+      // ========================================
+      function loadSignalNames() {
+        var diList = document.getElementById("diSignalList");
+        var doList = document.getElementById("doSignalList");
+        var diItems = [];
+        var doItems = [];
+        var diLoadCount = 0;
+        var doLoadCount = 0;
+
+        for (var i = 1; i <= 10; i++) {
+          (function(index) {
+            ihmiGet("DI_NAME[" + index + "]", function(kprog, kv, type, val) {
+              diLoadCount++;
+              if (val && val.trim() !== "") {
+                diItems.push({ index: index, value: val });
+              }
+
+              if (diLoadCount === 10) {
+                diItems.sort(function(a, b) { return a.index - b.index; });
+                diItems.forEach(function(item) {
+                  var div = document.createElement("div");
+                  div.className = "draggable-item signal-di";
+                  div.draggable = true;
+                  div.setAttribute("data-value", item.value);
+                  div.setAttribute("data-type", "signal-di");
+                  div.textContent = item.value;
+                  diList.appendChild(div);
+                  setupDragEvents(div);
+                });
+              }
+            });
+          })(i);
+        }
+
+        for (var i = 1; i <= 10; i++) {
+          (function(index) {
+            ihmiGet("DO_NAME[" + index + "]", function(kprog, kv, type, val) {
+              doLoadCount++;
+              if (val && val.trim() !== "") {
+                doItems.push({ index: index, value: val });
+              }
+
+              if (doLoadCount === 10) {
+                doItems.sort(function(a, b) { return a.index - b.index; });
+                doItems.forEach(function(item) {
+                  var div = document.createElement("div");
+                  div.className = "draggable-item signal-do";
+                  div.draggable = true;
+                  div.setAttribute("data-value", item.value);
+                  div.setAttribute("data-type", "signal-do");
+                  div.textContent = item.value;
+                  doList.appendChild(div);
+                  setupDragEvents(div);
+                });
+              }
+            });
+          })(i);
+        }
+      }
+
+      // ========================================
+      // 드래그 이벤트 설정
+      // ========================================
+      function setupDragEvents(element) {
+        element.addEventListener("dragstart", function(e) {
+          e.dataTransfer.effectAllowed = "copy";
+          e.dataTransfer.setData("text/plain", element.getAttribute("data-value"));
+          e.dataTransfer.setData("item-type", element.getAttribute("data-type"));
+        });
+      }
+
+      // ========================================
+      // 초기화
+      // ========================================
+      window.onload = function() {
+        loadSignalNames();
+        loadConditions();
+
+        var operators = document.querySelectorAll(".draggable-item.operator");
+        operators.forEach(function(op) {
+          setupDragEvents(op);
+        });
+
+        var zone = document.getElementById("conditionZone");
+        var dropTargetIndex = -1;
+
+        zone.addEventListener("dragover", function(e) {
+          e.preventDefault();
+          var isReorder = e.dataTransfer.types.indexOf("is-reorder") !== -1;
+          e.dataTransfer.dropEffect = isReorder ? "move" : "copy";
+          zone.classList.add("drag-over");
+          draggedOutside = false;
+
+          var afterElement = getDragAfterElement(zone, e.clientX);
+          if (afterElement == null) {
+            dropTargetIndex = -1;
+          } else {
+            dropTargetIndex = parseInt(afterElement.getAttribute("data-index"));
+          }
+        });
+
+        zone.addEventListener("dragleave", function(e) {
+          var rect = zone.getBoundingClientRect();
+          if (e.clientX < rect.left || e.clientX > rect.right ||
+              e.clientY < rect.top || e.clientY > rect.bottom) {
+            draggedOutside = true;
+          }
+          zone.classList.remove("drag-over");
+        });
+
+        zone.addEventListener("drop", function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          zone.classList.remove("drag-over");
+          draggedOutside = false;
+
+          var isReorder = e.dataTransfer.getData("is-reorder") === "true";
+          var sourceIndex = e.dataTransfer.getData("source-index");
+
+          if (isReorder && sourceIndex !== "") {
+            var srcIdx = parseInt(sourceIndex);
+
+            if (dropTargetIndex === -1) {
+              if (srcIdx !== conditionItems.length - 1) {
+                var movedItem = conditionItems.splice(srcIdx, 1)[0];
+                conditionItems.push(movedItem);
+                updateConditionZone();
+              }
+            } else if (srcIdx !== dropTargetIndex) {
+              var movedItem = conditionItems.splice(srcIdx, 1)[0];
+
+              var insertIdx = dropTargetIndex;
+              if (srcIdx < dropTargetIndex) {
+                insertIdx = dropTargetIndex - 1;
+              }
+
+              conditionItems.splice(insertIdx, 0, movedItem);
+              updateConditionZone();
+            }
+          } else {
+            var value = e.dataTransfer.getData("text/plain");
+            var type = e.dataTransfer.getData("item-type");
+
+            if (!type) {
+              type = "operator";
+            }
+
+            if (dropTargetIndex === -1 || dropTargetIndex >= conditionItems.length) {
+              conditionItems.push({
+                text: value,
+                type: type
+              });
+            } else {
+              conditionItems.splice(dropTargetIndex, 0, {
+                text: value,
+                type: type
+              });
+            }
+
+            updateConditionZone();
+          }
+        });
+
+        function getDragAfterElement(container, x) {
+          var draggableElements = Array.from(container.querySelectorAll(".condition-item:not(.dragging)"));
+
+          return draggableElements.reduce(function(closest, child) {
+            var box = child.getBoundingClientRect();
+            var offset = x - box.left - box.width / 2;
+
+            if (offset < 0 && offset > closest.offset) {
+              return { offset: offset, element: child };
+            } else {
+              return closest;
+            }
+          }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+      };
+    </script>
+  </body>
+</html>

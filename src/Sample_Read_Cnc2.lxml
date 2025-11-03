@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="SJIS"?>
+<editor>
+  <instruction type="normal" section="cat_plugin">
+    <iconfile>SmplGrp_close.png</iconfile>
+    <icontext>CNC2</icontext>
+    <program>IPL_DN_SMPLGRP_CLOSE.pc</program>
+    <detail>
+      <title>This is title</title>
+      <src>Sample_Read_Cnc2.stm</src>
+      <init func="dropAdvInstData" param="'',0"></init>
+      <disp>dispAdvInstData</disp>
+    </detail>
+  </instruction>
+</editor>
