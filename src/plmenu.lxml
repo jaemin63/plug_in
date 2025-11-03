@@ -1,3 +1,4 @@
 <FanucMenu Name="DN_SimTen">
-<FanucMenuItem Header="DN Solutions Sample" Screen="DN_SimTen/Sample_Config.stm" />
+<FanucMenuItem Header="DI/DO Define" Screen="DN_SimTen/Sample_Dido_Define.stm" />
+<FanucMenuItem Header="I/F Condition Build" Screen="DN_SimTen/Sample_Condition_Build.stm" />
 </FanucMenu>

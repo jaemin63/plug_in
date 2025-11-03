@@ -268,10 +268,8 @@
   <body>
     <div class="wrap">
       <div class="header">
-        <h2 style="margin: 0">Monitor: I/O Configuration</h2>
+        <h2 style="margin: 0">DI/DO Define</h2>
         <div class="spacer"></div>
-        <a href="Sample_Config.stm" class="btn-nav">Config</a>
-        <a href="Sample_Condition.stm" class="btn-nav">Conditions</a>
         <div class="toggle-container">
           <span class="toggle-label">Edit Mode</span>
           <div class="toggle-switch" id="toggleSwitch" onclick="toggleEdit()">
@@ -305,70 +303,70 @@
             <input type="text" id="DI_NAME_1" maxlength="32" />
             <input type="number" id="DI_ADDR_1" min="0" max="9999" />
             <input type="number" id="DI_BIT_1" min="0" max="7" />
-            <input type="text" id="DI_OFFSET_1" readonly style="background: #f0f0f0; cursor: default;" />
+            <input type="text" id="DI_OFFSET_1" readonly style="background: #f0f0f0; cursor: default" />
           </div>
           <div class="grid">
             <div class="label">2</div>
             <input type="text" id="DI_NAME_2" maxlength="32" />
             <input type="number" id="DI_ADDR_2" min="0" max="9999" />
             <input type="number" id="DI_BIT_2" min="0" max="7" />
-            <input type="text" id="DI_OFFSET_2" readonly style="background: #f0f0f0; cursor: default;" />
+            <input type="text" id="DI_OFFSET_2" readonly style="background: #f0f0f0; cursor: default" />
           </div>
           <div class="grid">
             <div class="label">3</div>
             <input type="text" id="DI_NAME_3" maxlength="32" />
             <input type="number" id="DI_ADDR_3" min="0" max="9999" />
             <input type="number" id="DI_BIT_3" min="0" max="7" />
-            <input type="text" id="DI_OFFSET_3" readonly style="background: #f0f0f0; cursor: default;" />
+            <input type="text" id="DI_OFFSET_3" readonly style="background: #f0f0f0; cursor: default" />
           </div>
           <div class="grid">
             <div class="label">4</div>
             <input type="text" id="DI_NAME_4" maxlength="32" />
             <input type="number" id="DI_ADDR_4" min="0" max="9999" />
             <input type="number" id="DI_BIT_4" min="0" max="7" />
-            <input type="text" id="DI_OFFSET_4" readonly style="background: #f0f0f0; cursor: default;" />
+            <input type="text" id="DI_OFFSET_4" readonly style="background: #f0f0f0; cursor: default" />
           </div>
           <div class="grid">
             <div class="label">5</div>
             <input type="text" id="DI_NAME_5" maxlength="32" />
             <input type="number" id="DI_ADDR_5" min="0" max="9999" />
             <input type="number" id="DI_BIT_5" min="0" max="7" />
-            <input type="text" id="DI_OFFSET_5" readonly style="background: #f0f0f0; cursor: default;" />
+            <input type="text" id="DI_OFFSET_5" readonly style="background: #f0f0f0; cursor: default" />
           </div>
           <div class="grid">
             <div class="label">6</div>
             <input type="text" id="DI_NAME_6" maxlength="32" />
             <input type="number" id="DI_ADDR_6" min="0" max="9999" />
             <input type="number" id="DI_BIT_6" min="0" max="7" />
-            <input type="text" id="DI_OFFSET_6" readonly style="background: #f0f0f0; cursor: default;" />
+            <input type="text" id="DI_OFFSET_6" readonly style="background: #f0f0f0; cursor: default" />
           </div>
           <div class="grid">
             <div class="label">7</div>
             <input type="text" id="DI_NAME_7" maxlength="32" />
             <input type="number" id="DI_ADDR_7" min="0" max="9999" />
             <input type="number" id="DI_BIT_7" min="0" max="7" />
-            <input type="text" id="DI_OFFSET_7" readonly style="background: #f0f0f0; cursor: default;" />
+            <input type="text" id="DI_OFFSET_7" readonly style="background: #f0f0f0; cursor: default" />
           </div>
           <div class="grid">
             <div class="label">8</div>
             <input type="text" id="DI_NAME_8" maxlength="32" />
             <input type="number" id="DI_ADDR_8" min="0" max="9999" />
             <input type="number" id="DI_BIT_8" min="0" max="7" />
-            <input type="text" id="DI_OFFSET_8" readonly style="background: #f0f0f0; cursor: default;" />
+            <input type="text" id="DI_OFFSET_8" readonly style="background: #f0f0f0; cursor: default" />
           </div>
           <div class="grid">
             <div class="label">9</div>
             <input type="text" id="DI_NAME_9" maxlength="32" />
             <input type="number" id="DI_ADDR_9" min="0" max="9999" />
             <input type="number" id="DI_BIT_9" min="0" max="7" />
-            <input type="text" id="DI_OFFSET_9" readonly style="background: #f0f0f0; cursor: default;" />
+            <input type="text" id="DI_OFFSET_9" readonly style="background: #f0f0f0; cursor: default" />
           </div>
           <div class="grid">
             <div class="label">10</div>
             <input type="text" id="DI_NAME_10" maxlength="32" />
             <input type="number" id="DI_ADDR_10" min="0" max="9999" />
             <input type="number" id="DI_BIT_10" min="0" max="7" />
-            <input type="text" id="DI_OFFSET_10" readonly style="background: #f0f0f0; cursor: default;" />
+            <input type="text" id="DI_OFFSET_10" readonly style="background: #f0f0f0; cursor: default" />
           </div>
         </div>
       </div>
@@ -392,70 +390,70 @@
             <input type="text" id="DO_NAME_1" maxlength="32" />
             <input type="number" id="DO_ADDR_1" min="0" max="9999" />
             <input type="number" id="DO_BIT_1" min="0" max="7" />
-            <input type="text" id="DO_OFFSET_1" readonly style="background: #f0f0f0; cursor: default;" />
+            <input type="text" id="DO_OFFSET_1" readonly style="background: #f0f0f0; cursor: default" />
           </div>
           <div class="grid">
             <div class="label">2</div>
             <input type="text" id="DO_NAME_2" maxlength="32" />
             <input type="number" id="DO_ADDR_2" min="0" max="9999" />
             <input type="number" id="DO_BIT_2" min="0" max="7" />
-            <input type="text" id="DO_OFFSET_2" readonly style="background: #f0f0f0; cursor: default;" />
+            <input type="text" id="DO_OFFSET_2" readonly style="background: #f0f0f0; cursor: default" />
           </div>
           <div class="grid">
             <div class="label">3</div>
             <input type="text" id="DO_NAME_3" maxlength="32" />
             <input type="number" id="DO_ADDR_3" min="0" max="9999" />
             <input type="number" id="DO_BIT_3" min="0" max="7" />
-            <input type="text" id="DO_OFFSET_3" readonly style="background: #f0f0f0; cursor: default;" />
+            <input type="text" id="DO_OFFSET_3" readonly style="background: #f0f0f0; cursor: default" />
           </div>
           <div class="grid">
             <div class="label">4</div>
             <input type="text" id="DO_NAME_4" maxlength="32" />
             <input type="number" id="DO_ADDR_4" min="0" max="9999" />
             <input type="number" id="DO_BIT_4" min="0" max="7" />
-            <input type="text" id="DO_OFFSET_4" readonly style="background: #f0f0f0; cursor: default;" />
+            <input type="text" id="DO_OFFSET_4" readonly style="background: #f0f0f0; cursor: default" />
           </div>
           <div class="grid">
             <div class="label">5</div>
             <input type="text" id="DO_NAME_5" maxlength="32" />
             <input type="number" id="DO_ADDR_5" min="0" max="9999" />
             <input type="number" id="DO_BIT_5" min="0" max="7" />
-            <input type="text" id="DO_OFFSET_5" readonly style="background: #f0f0f0; cursor: default;" />
+            <input type="text" id="DO_OFFSET_5" readonly style="background: #f0f0f0; cursor: default" />
           </div>
           <div class="grid">
             <div class="label">6</div>
             <input type="text" id="DO_NAME_6" maxlength="32" />
             <input type="number" id="DO_ADDR_6" min="0" max="9999" />
             <input type="number" id="DO_BIT_6" min="0" max="7" />
-            <input type="text" id="DO_OFFSET_6" readonly style="background: #f0f0f0; cursor: default;" />
+            <input type="text" id="DO_OFFSET_6" readonly style="background: #f0f0f0; cursor: default" />
           </div>
           <div class="grid">
             <div class="label">7</div>
             <input type="text" id="DO_NAME_7" maxlength="32" />
             <input type="number" id="DO_ADDR_7" min="0" max="9999" />
             <input type="number" id="DO_BIT_7" min="0" max="7" />
-            <input type="text" id="DO_OFFSET_7" readonly style="background: #f0f0f0; cursor: default;" />
+            <input type="text" id="DO_OFFSET_7" readonly style="background: #f0f0f0; cursor: default" />
           </div>
           <div class="grid">
             <div class="label">8</div>
             <input type="text" id="DO_NAME_8" maxlength="32" />
             <input type="number" id="DO_ADDR_8" min="0" max="9999" />
             <input type="number" id="DO_BIT_8" min="0" max="7" />
-            <input type="text" id="DO_OFFSET_8" readonly style="background: #f0f0f0; cursor: default;" />
+            <input type="text" id="DO_OFFSET_8" readonly style="background: #f0f0f0; cursor: default" />
           </div>
           <div class="grid">
             <div class="label">9</div>
             <input type="text" id="DO_NAME_9" maxlength="32" />
             <input type="number" id="DO_ADDR_9" min="0" max="9999" />
             <input type="number" id="DO_BIT_9" min="0" max="7" />
-            <input type="text" id="DO_OFFSET_9" readonly style="background: #f0f0f0; cursor: default;" />
+            <input type="text" id="DO_OFFSET_9" readonly style="background: #f0f0f0; cursor: default" />
           </div>
           <div class="grid">
             <div class="label">10</div>
             <input type="text" id="DO_NAME_10" maxlength="32" />
             <input type="number" id="DO_ADDR_10" min="0" max="9999" />
             <input type="number" id="DO_BIT_10" min="0" max="7" />
-            <input type="text" id="DO_OFFSET_10" readonly style="background: #f0f0f0; cursor: default;" />
+            <input type="text" id="DO_OFFSET_10" readonly style="background: #f0f0f0; cursor: default" />
           </div>
         </div>
       </div>
@@ -464,7 +462,7 @@
     </div>
 
     <script type="text/javascript">
-      const KAREL_PROGRAM_NAME = "IPL_DN_SmplGrp_Cfg";
+      const KAREL_PROGRAM_NAME = "IPL_DN_SimTen_Cfg";
       const NAME_MIN = "1",
         NAME_MAX = "32";
       const ADDR_MIN = "0",

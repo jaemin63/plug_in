@@ -75,7 +75,8 @@
         border-collapse: collapse;
         margin-top: 12px;
       }
-      th, td {
+      th,
+      td {
         padding: 12px;
         text-align: left;
         border-bottom: 1px solid #e0e0e0;
@@ -370,22 +371,21 @@
   <body>
     <div class="wrap">
       <div class="header">
-        <h2>Condition Manager</h2>
-        <a href="Sample_Monitor.stm" class="btn-nav">Back to Monitor</a>
+        <h2>I/F Condition Build</h2>
       </div>
 
       <div class="panel">
         <div class="section-title">
           Conditions
-          <button class="btn-add" onclick="openAddModal()" style="float: right;">Add Condition</button>
+          <button class="btn-add" onclick="openAddModal()" style="float: right">Add Condition</button>
         </div>
         <table>
           <thead>
             <tr>
-              <th style="width: 50px;">No</th>
-              <th style="width: 200px;">Name</th>
+              <th style="width: 50px">No</th>
+              <th style="width: 200px">Name</th>
               <th>Expression</th>
-              <th style="width: 120px;">Actions</th>
+              <th style="width: 120px">Actions</th>
             </tr>
           </thead>
           <tbody id="conditionTableBody">
@@ -451,7 +451,7 @@
       // ========================================
       // Karel 프로그램 설정
       // ========================================
-      var KAREL_PROGRAM_NAME = "IPL_DN_SmplGrp_Cfg";
+      var KAREL_PROGRAM_NAME = "IPL_DN_SimTen_Cfg";
       var conditionItems = [];
       var currentEditIndex = -1; // -1 means new, 0-9 means edit
       var draggedOutside = false;
@@ -490,12 +490,12 @@
       // ========================================
       function switchTab(tabName) {
         var tabs = document.querySelectorAll(".tab");
-        tabs.forEach(function(tab) {
+        tabs.forEach(function (tab) {
           tab.classList.remove("active");
         });
 
         var tabContents = document.querySelectorAll(".tab-content");
-        tabContents.forEach(function(content) {
+        tabContents.forEach(function (content) {
           content.classList.remove("active");
         });
 
@@ -515,14 +515,14 @@
         } else {
           zone.classList.remove("empty");
 
-          conditionItems.forEach(function(item, index) {
+          conditionItems.forEach(function (item, index) {
             var div = document.createElement("div");
             div.className = "condition-item " + item.type;
             div.draggable = true;
             div.setAttribute("data-index", index);
             div.textContent = item.text;
 
-            div.addEventListener("dragstart", function(e) {
+            div.addEventListener("dragstart", function (e) {
               e.dataTransfer.effectAllowed = "move";
               e.dataTransfer.setData("source-index", String(index));
               e.dataTransfer.setData("is-reorder", "true");
@@ -530,13 +530,12 @@
               draggedOutside = false;
             });
 
-            div.addEventListener("dragend", function(e) {
+            div.addEventListener("dragend", function (e) {
               div.classList.remove("dragging");
 
               if (draggedOutside) {
                 var rect = zone.getBoundingClientRect();
-                if (e.clientX < rect.left || e.clientX > rect.right ||
-                    e.clientY < rect.top || e.clientY > rect.bottom) {
+                if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) {
                   conditionItems.splice(index, 1);
                   updateConditionZone();
                 }
@@ -564,11 +563,11 @@
         currentEditIndex = index;
         document.getElementById("modalTitle").textContent = "Edit Condition";
 
-        ihmiGet("COND_NAME[" + (index + 1) + "]", function(kprog, kv, type, val) {
+        ihmiGet("COND_NAME[" + (index + 1) + "]", function (kprog, kv, type, val) {
           document.getElementById("conditionName").value = val || "";
         });
 
-        ihmiGet("COND_EXPR[" + (index + 1) + "]", function(kprog, kv, type, val) {
+        ihmiGet("COND_EXPR[" + (index + 1) + "]", function (kprog, kv, type, val) {
           parseConditionString(val || "");
         });
 
@@ -586,9 +585,11 @@
       // ========================================
       function saveCondition() {
         var name = document.getElementById("conditionName").value.trim();
-        var expr = conditionItems.map(function(item) {
-          return item.text;
-        }).join(" ");
+        var expr = conditionItems
+          .map(function (item) {
+            return item.text;
+          })
+          .join(" ");
 
         if (!name) {
           alert("Please enter a condition name.");
@@ -602,7 +603,7 @@
 
         if (currentEditIndex === -1) {
           // 새로 추가: 빈 슬롯 찾기
-          findEmptySlot(function(targetIndex) {
+          findEmptySlot(function (targetIndex) {
             if (targetIndex === -1) {
               alert("All condition slots are full (max 10).");
               return;
@@ -612,7 +613,7 @@
             ihmiSet("COND_EXPR[" + (targetIndex + 1) + "]", expr);
 
             closeModal();
-            setTimeout(function() {
+            setTimeout(function () {
               loadConditions();
             }, 200);
           });
@@ -622,7 +623,7 @@
           ihmiSet("COND_EXPR[" + (currentEditIndex + 1) + "]", expr);
 
           closeModal();
-          setTimeout(function() {
+          setTimeout(function () {
             loadConditions();
           }, 200);
         }
@@ -636,9 +637,9 @@
         var slots = [];
 
         for (var i = 0; i < 10; i++) {
-          (function(index) {
-            ihmiGet("COND_NAME[" + (index + 1) + "]", function(kprog, kv, type, val) {
-              slots[index] = (val && val.trim() !== "") ? "occupied" : "empty";
+          (function (index) {
+            ihmiGet("COND_NAME[" + (index + 1) + "]", function (kprog, kv, type, val) {
+              slots[index] = val && val.trim() !== "" ? "occupied" : "empty";
               loadedCount++;
 
               if (loadedCount === 10) {
@@ -678,9 +679,9 @@
         var conditions = [];
 
         for (var i = 0; i < 10; i++) {
-          (function(index) {
-            ihmiGet("COND_NAME[" + (index + 1) + "]", function(kprog, kv, type, name) {
-              ihmiGet("COND_EXPR[" + (index + 1) + "]", function(kprog2, kv2, type2, expr) {
+          (function (index) {
+            ihmiGet("COND_NAME[" + (index + 1) + "]", function (kprog, kv, type, name) {
+              ihmiGet("COND_EXPR[" + (index + 1) + "]", function (kprog2, kv2, type2, expr) {
                 conditions[index] = { name: name || "", expr: expr || "" };
                 loadedCount++;
 
@@ -697,17 +698,27 @@
         var tbody = document.getElementById("conditionTableBody");
         tbody.innerHTML = "";
 
-        conditions.forEach(function(cond, index) {
+        conditions.forEach(function (cond, index) {
           if (cond.name && cond.name.trim() !== "") {
             var tr = document.createElement("tr");
             tr.innerHTML =
-              '<td>' + (index + 1) + '</td>' +
-              '<td>' + cond.name + '</td>' +
-              '<td>' + cond.expr + '</td>' +
-              '<td>' +
-              '<button class="btn-edit" onclick="openEditModal(' + index + ')">Edit</button>' +
-              '<button class="btn-delete" onclick="deleteCondition(' + index + ')">Delete</button>' +
-              '</td>';
+              "<td>" +
+              (index + 1) +
+              "</td>" +
+              "<td>" +
+              cond.name +
+              "</td>" +
+              "<td>" +
+              cond.expr +
+              "</td>" +
+              "<td>" +
+              '<button class="btn-edit" onclick="openEditModal(' +
+              index +
+              ')">Edit</button>' +
+              '<button class="btn-delete" onclick="deleteCondition(' +
+              index +
+              ')">Delete</button>' +
+              "</td>";
             tbody.appendChild(tr);
           }
         });
@@ -732,7 +743,7 @@
 
         var tokens = str.split(" ");
 
-        tokens.forEach(function(token) {
+        tokens.forEach(function (token) {
           token = token.trim();
           if (token === "") return;
 
@@ -750,7 +761,7 @@
 
           conditionItems.push({
             text: token,
-            type: type
+            type: type,
           });
         });
 
@@ -769,16 +780,18 @@
         var doLoadCount = 0;
 
         for (var i = 1; i <= 10; i++) {
-          (function(index) {
-            ihmiGet("DI_NAME[" + index + "]", function(kprog, kv, type, val) {
+          (function (index) {
+            ihmiGet("DI_NAME[" + index + "]", function (kprog, kv, type, val) {
               diLoadCount++;
               if (val && val.trim() !== "") {
                 diItems.push({ index: index, value: val });
               }
 
               if (diLoadCount === 10) {
-                diItems.sort(function(a, b) { return a.index - b.index; });
-                diItems.forEach(function(item) {
+                diItems.sort(function (a, b) {
+                  return a.index - b.index;
+                });
+                diItems.forEach(function (item) {
                   var div = document.createElement("div");
                   div.className = "draggable-item signal-di";
                   div.draggable = true;
@@ -794,16 +807,18 @@
         }
 
         for (var i = 1; i <= 10; i++) {
-          (function(index) {
-            ihmiGet("DO_NAME[" + index + "]", function(kprog, kv, type, val) {
+          (function (index) {
+            ihmiGet("DO_NAME[" + index + "]", function (kprog, kv, type, val) {
               doLoadCount++;
               if (val && val.trim() !== "") {
                 doItems.push({ index: index, value: val });
               }
 
               if (doLoadCount === 10) {
-                doItems.sort(function(a, b) { return a.index - b.index; });
-                doItems.forEach(function(item) {
+                doItems.sort(function (a, b) {
+                  return a.index - b.index;
+                });
+                doItems.forEach(function (item) {
                   var div = document.createElement("div");
                   div.className = "draggable-item signal-do";
                   div.draggable = true;
@@ -823,7 +838,7 @@
       // 드래그 이벤트 설정
       // ========================================
       function setupDragEvents(element) {
-        element.addEventListener("dragstart", function(e) {
+        element.addEventListener("dragstart", function (e) {
           e.dataTransfer.effectAllowed = "copy";
           e.dataTransfer.setData("text/plain", element.getAttribute("data-value"));
           e.dataTransfer.setData("item-type", element.getAttribute("data-type"));
@@ -833,19 +848,19 @@
       // ========================================
       // 초기화
       // ========================================
-      window.onload = function() {
+      window.onload = function () {
         loadSignalNames();
         loadConditions();
 
         var operators = document.querySelectorAll(".draggable-item.operator");
-        operators.forEach(function(op) {
+        operators.forEach(function (op) {
           setupDragEvents(op);
         });
 
         var zone = document.getElementById("conditionZone");
         var dropTargetIndex = -1;
 
-        zone.addEventListener("dragover", function(e) {
+        zone.addEventListener("dragover", function (e) {
           e.preventDefault();
           var isReorder = e.dataTransfer.types.indexOf("is-reorder") !== -1;
           e.dataTransfer.dropEffect = isReorder ? "move" : "copy";
@@ -860,16 +875,15 @@
           }
         });
 
-        zone.addEventListener("dragleave", function(e) {
+        zone.addEventListener("dragleave", function (e) {
           var rect = zone.getBoundingClientRect();
-          if (e.clientX < rect.left || e.clientX > rect.right ||
-              e.clientY < rect.top || e.clientY > rect.bottom) {
+          if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) {
             draggedOutside = true;
           }
           zone.classList.remove("drag-over");
         });
 
-        zone.addEventListener("drop", function(e) {
+        zone.addEventListener("drop", function (e) {
           e.preventDefault();
           e.stopPropagation();
           zone.classList.remove("drag-over");
@@ -909,12 +923,12 @@
             if (dropTargetIndex === -1 || dropTargetIndex >= conditionItems.length) {
               conditionItems.push({
                 text: value,
-                type: type
+                type: type,
               });
             } else {
               conditionItems.splice(dropTargetIndex, 0, {
                 text: value,
-                type: type
+                type: type,
               });
             }
 
@@ -925,16 +939,19 @@
         function getDragAfterElement(container, x) {
           var draggableElements = Array.from(container.querySelectorAll(".condition-item:not(.dragging)"));
 
-          return draggableElements.reduce(function(closest, child) {
-            var box = child.getBoundingClientRect();
-            var offset = x - box.left - box.width / 2;
+          return draggableElements.reduce(
+            function (closest, child) {
+              var box = child.getBoundingClientRect();
+              var offset = x - box.left - box.width / 2;
 
-            if (offset < 0 && offset > closest.offset) {
-              return { offset: offset, element: child };
-            } else {
-              return closest;
-            }
-          }, { offset: Number.NEGATIVE_INFINITY }).element;
+              if (offset < 0 && offset > closest.offset) {
+                return { offset: offset, element: child };
+              } else {
+                return closest;
+              }
+            },
+            { offset: Number.NEGATIVE_INFINITY }
+          ).element;
         }
       };
     </script>

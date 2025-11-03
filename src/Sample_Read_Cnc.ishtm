@@ -180,7 +180,7 @@
       // ========================================
       // Karel 프로그램 설정
       // ========================================
-      var KAREL_PROGRAM_NAME = "IPL_DN_SmplGrp_Cfg";
+      var KAREL_PROGRAM_NAME = "IPL_DN_SimTen_Cfg";
       var conditions = [];
       var conditionItems = [];
 
@@ -214,7 +214,7 @@
         } else {
           zone.classList.remove("empty");
 
-          conditionItems.forEach(function(item) {
+          conditionItems.forEach(function (item) {
             var div = document.createElement("div");
             div.className = "condition-item " + item.type;
             div.textContent = item.text;
@@ -246,9 +246,11 @@
       // 파라미터 업데이트
       // ========================================
       function updateParameter() {
-        var conditionStr = conditionItems.map(function(item) {
-          return item.text;
-        }).join(" ");
+        var conditionStr = conditionItems
+          .map(function (item) {
+            return item.text;
+          })
+          .join(" ");
 
         var waitVal = document.getElementById("chkWait").checked ? "1" : "0";
         var paramStr = "'" + conditionStr + "'," + waitVal;
@@ -335,7 +337,7 @@
         // 공백 기준으로 분리
         var tokens = str.split(" ");
 
-        tokens.forEach(function(token) {
+        tokens.forEach(function (token) {
           token = token.trim();
           if (token === "") return;
 
@@ -354,7 +356,7 @@
 
           conditionItems.push({
             text: token,
-            type: type
+            type: type,
           });
         });
 
@@ -370,14 +372,14 @@
         conditions = [];
 
         for (var i = 0; i < 10; i++) {
-          (function(index) {
-            ihmiGet("COND_NAME[" + (index + 1) + "]", function(kprog, kv, type, name) {
-              ihmiGet("COND_EXPR[" + (index + 1) + "]", function(kprog2, kv2, type2, expr) {
+          (function (index) {
+            ihmiGet("COND_NAME[" + (index + 1) + "]", function (kprog, kv, type, name) {
+              ihmiGet("COND_EXPR[" + (index + 1) + "]", function (kprog2, kv2, type2, expr) {
                 if (name && name.trim() !== "") {
                   conditions.push({
                     index: index,
                     name: name,
-                    expr: expr || ""
+                    expr: expr || "",
                   });
                 }
 
@@ -385,12 +387,12 @@
 
                 if (loadedCount === 10) {
                   // 모든 조건 로드 완료 - 인덱스 순서로 정렬
-                  conditions.sort(function(a, b) {
+                  conditions.sort(function (a, b) {
                     return a.index - b.index;
                   });
 
                   // Select box 채우기
-                  conditions.forEach(function(cond, idx) {
+                  conditions.forEach(function (cond, idx) {
                     var option = document.createElement("option");
                     option.value = String(idx);
                     option.textContent = cond.name;
@@ -406,7 +408,7 @@
       // ========================================
       // 초기화 (페이지 로드 시)
       // ========================================
-      window.onload = function() {
+      window.onload = function () {
         loadConditions();
       };
     </script>
