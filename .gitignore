@@ -5,8 +5,8 @@
 # Output directory
 output/
 
-# Claude Code
-.claude/
+# backup directory
+backup/
 
 # Eclipse settings
 .settings/
